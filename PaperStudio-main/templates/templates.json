@@ -3,34 +3,62 @@
     "id": "standard_a4",
     "name": "Standard Letter A4",
     "desc": "Classic official document style, suitable for formal documents",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAGMCAYAAAABeb3ZAAAQAElEQVR4AeydCXRcV3nHv/tGsiTHdsoSkuCZsRyCm5KUNG3SlkN76jYQjVKSFkIdaCjpAbrR0rIedmo4cCjrAcpyCPS0De2BYpZASOyELD5QEqA1WyFkw9ZIsgMkLAl2tM67/e5II43Hkvyepffue29+c+aTpTf33ft9v++7/7n3zeJAuEEAAhBIiAACkxBYuoUABEQQGKoAAhBIjAACkxhaOvZNgPH9E0Bg/OcADyBQWAIITGFTS2AQ8E8AgfGfAzyAQGEJIDAJpZZuIQABXkWiBiAAgQQJsIJJEC5dQ6DbCSAw3V4BxA+BuARitEdgYsCiKQQgEI8AAhOPF60hAIEYBBCYGLBoCgEIxCOAwMTjRWvfBBg/VwQQmFylC2chkC8CCEy+8oW3EMgVAQTmOOmysr3nwOBFZ41Whi8a33zxtlv17+OcEvnh1fa9mvOXO3e540sFFaftUucneWw1vnWee2Bwe39SNZAkgyz0HWTBiSz7cNcvbxoIZs0OK/aDjZJ9+tmnSP9a+bvavsfLU72lRnBeaMJXNYLwpWeW+58QVQCXG3u540vF3Nl2cPCXNriJWK9e/LSRcu0ZnVavXvS0TpFuTebOc1xbPf/i0crQH+m/kfpq97HTtzh56zx3tmdg44lybvepG39HYFbIuiv+/smZM60xVbEyImL3i97iTiI9pXl3/blzW6uhgYlGT/OBE/xRGb994uH1675gQtkrIk8JAzMcZyLpOc27tbZ3sn99c5U2MDG5TQIpNR+I+WO2Z6o3CINflTDcERi5otPEmj+xJjx7cFAW4m5NZrH2o8bIm0wgzxdj3yw2+JCe/xJrjevnSndMH79a7U1qVy7VV0x3Izc/+cGJNeEcecACNURgVkimK37TCC8xItutkb3GBgcm+/suNI3gmdaGf6oTIFbhd644RMInSCAlOc6tJUydz/Lumf2kI7OXWGN+Rbs4ScSe83Bf36XueLu51UD7ysH154RTjJwuVu7SIhi3Ej7D6irNWPN0K2ZA+4t9dxNxy+ieXVvG9zy3Orbnsk7bMnbDlZXxPZ/dOrJ38tjO7bT6800bymdEzLeV+U9Fwo/3hr1/rsK5U4/dpr5+Vdu8MSxNXr5yX9J+WycRubiTWmyUaVXHaz6pHDlJZk86cv+sBOb7VuyNQWjvdsdce2xlAlpbKzfo1kePLTRzyDYnoXmXMWZm/eTkX+rq4TnGyieU0Q/FmI8NTE5esVThu77cysWaX/pdfQa/WyfPl/WcpxgbDkeZzE6Y2lYGR4mabo8u1ySu0z5vU1/WB8Zcfrxn+5Zwqg8XGBN+OghnrtUVhJv060IjZwXWPl4fWxCsdoFqxeLErlPcJgYGau1Cpn3EuJt1OqHP0xXMM1QQzg2t9Nkw6GkEU78qDfsSje8PJZD7bGh1lbTuKdHHme9XuQQdqypZZkU1/6RyUWs8M9t/cUNOHlbxa+g5NzVEs63HnIi3s5Fc35JxXmszmY7z3KubRPUtA0cVtk5ArXG7Wea3SnGewZxAlOavlYgNXmStrlqs3GyN3G2szB6PldsKtVYGS4la+0phqcfbRc/F1u+2fWLONGJ63SS2pnSm1W2gFXtIjw2EIr+sPm3UWM9TMb1c2iaii6UldiqWlzsxcG2tyAXK6NVh0Hjl1nLfDjf5lrLlJ+TRK5jAyJQK5UDDGLeCvED7v0tZbRIjr7PWfLRRino9zB6WefFv5+R+b+eiMUg7G/17gx5oxq++uG3akiZtbPQc7h0EEJgOIO5PN4mMtToBRYzI1621v2GMvNeI2abPah8Og8lrl17my5I3JxA68VvXSn7HmOAXA1OTL5sY6PusTkq3cljyvKUOnqRLdWPMPdbYUT1361Rf/xmtC7sLE0TFQpYRwtbqxRh5mk7aDW2TeLv69Vnt... (line truncated to 2000 chars)
-7:     "url": "./templates/standard_a4.paper"
-8:   },
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>A4</text></svg>",
+    "url": "./templates/standard_a4.paper"
+  },
   {
     "id": "a9276b",
     "name": "Letterhead A4",
     "desc": "Custom company name letterhead, suitable for business documents",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAGMCAYAAAABeb3ZAAAQAElEQVR4Aey9C3xcV3Xvv9Y+58yM3rYlWbY0MxrJThzbeREnOCEkKInjVxITbjFvCrS0PNpb/pQ/t/23/RfTlv5LW3q5t1D4QIGmcCnEUEIelq0kxCEv8nBCHnbs2NZrJPkhv/SemXP2Xv+1R5aRbSXWUOQZjddk9jz2WXvttb9rn9/Z55yxokAeQkAICIEZIiACM0Ngxa0QEAIAIjAyC4SAEJgxAiIwM4ZWHOebgPSffwIiMPnPgUQgBIqWgAhM0aZWBiYE8k9ABCb/OZAIhEDREhCBmaHUilshIATkLpLMASEgBGaQgKxgZhCuuBYCFzoBEZgLfQbI+IVArgRysBeByQGWmAoBIZAbARGY3HiJtRAQAjkQEIHJAZaYCgEhkBsBEZjceIl1vglI/7OKgAjMrEqXBCsEZhcBEZjZlS+JVgjMKgIiMLMqXRKsEJhdBERgcsmX2AoBIZATARGYnHCJsRAQArkQmFUC0xW/bW5HbPWd3bHVN+5vXlVFAAjTeHQkWiK2ELy+vd3WV39H6XMrVngAZ9sRrPC64mtWdUbXvd++99dsqICTj44FaxOd0TXv4/oPcmyX7ly2MXRy01lvffWr4mz3rs7o6vd3x9YtImhxrZH1n4yuW9cVXfuBzoY1tyWja+bZmOy2M0tHYv2CZHTtO9jPqp6GW6p3L7m+4m7Y6JxpZ7ftq1s9f6IPu519KhtjMnrrRXa8/P0Uw2T09oZkdP3arvi6ZWdus20nyt556yqT0etKJred2GZz1Nmw9rqehnXRyf1ObJ/8Ps5i7e/zON7FfV9EzJ59qgmbF+tWl/G23+6IrfkIvy/v4Dw+0tLiEpydH5j06GlYc0VXfPWtvfWrY+eKwTZ7BE732ZFomWNzOM7gbK527LuXbJiSufVnCwHgyZyc4ruztqXc8qEpcgW/5mOqHP+armakmZoRrzPkNJz2MwA41wB+2g28P+5tWNdgEwn86OBJMT4hzp58ypTc7gThf+iOr/stKwyHOdGdsTV/0BVf83ne2W60E+ZIzYZyX2X+sPbQ/H/oSKxbuXfxujC7/dUzGnLB4GoE+gxXLh8t1Vlh4M+gQtiACB9DA+8lpKry4cEbOxtXLbWT1G6fXIznNgDgxxHU+0xgqmDiwf410q3A/pVSlwBgtDu+5pZXWUCIv8CkBwU6bhA+CYAbA+V+ODJW8YWV8cGbOhvW3dwRW/veroY1LHRrPmKU9/lQSP1tT7Tk+g7eOYEfB+rviBDiRgPOF3zXv23fvHWnhFIpfymh+b+QzGdSyl8MLS1niRa7AK/ClBmo/P0uFrmORMscrju1E2ky16CCP9GKPtneXNpsd17eDnZnIzg9N8ZzLiNiboTv0Y5fsW/HfNUTXXN1V3zth9qb1jeWlUMZAGxQhO9UhsrdoPSiRfvDm7piaz7ZkVibmGpHtYKiHVyPpP4scNV/P9RYwSKz6dQ85xhUMrqRxfFXdU3RyB1dsbV/3h1bu6Ezuna9MpHPlw0NfTTj+B/ujg79BQvc21nw38zisIJtrjFqzsdKRvy/vjY2cIorx3nas69+dfTNsaH/J9m45nf7Fq5vtLGWuKXVSPrDnYmBiya4TG5kY7P+ubzH5vBcpZuF1+bYC6kvdsfDLXZck/3l9nlmrE+Bnxn3v77X/Q23XMwCsNyKBnvJTuAFh9pGUOlfIGA1Eb3dKFq4HVqc/byaUabkYxkn+HR3/LYmO5m5zaknElzOO9WdRDRfzfEx8CoiiLiOeGITOlWBGyY/RGGuuwmA7sRAz7WNeVLNa4+uvTw7scycqxDhYkBYQgQxY0y23m4DA8sAcBH30QjGvQoI/wi189dVA8NvtUct9rO4s3HNVdZWa7wUKOsnoVx1UTIWeZOt72b/nIxmQLzYADUYhPcg4Z+XKe8Tydit... (line truncated to 2000 chars)
-14:     "url": "./templates/text.paper"
-15:   },
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Letterhead</text></svg>",
+    "url": "./templates/text.paper"
+  },
   {
     "id": "8f4ed4",
     "name": "Certificate",
     "desc": "Custom print example",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYwAAAEYCAYAAABPzsEfAAAQAElEQVR4AeydB4AlRbX3f1XVfe+dOzlsjixLzktG9BnwmXP2mUUl55wzApKTElRMmFHEhIhIDktmgc05h8lzQ3dXff+eBcSnz/AEH59Ob5+p7uqqUyfVOaeqZndtGLlGJDAigREJjEhgRAJ/gwQsI9eIBEYkMCKBEQmMSOBvkMBIwPgbhDTSZEQC/ycSGBl0RAKvMAmMBIxXmEJGyBmRwIgERiTwSpXASMB4pWpmhK4RCYxIYEQCrzAJjASMFxQy8jAigREJjEhgRAJ/SQIjAeMvSWfk24gERiQwIoERCbwggZGA8YIoRh5GJDAigVeqBEboemVIYCRgvDL0MELFiARGJDAigVe8BEYCxiteRSMEjkhgRAIjEnhlSGAkYLwy9PDKomKEmhEJjEhgRAJ/RgIjAePPCGWkakQCIxIYkcCIBP5UAiMB409lMlIzIoERCYxI4JUqgf9TukYCxv+p+EcGH5HAiARGJPD/jwRGAsb/P7oaoXREAiMSGJHA/6kERgLG/6n4RwZ/pUtghL4RCYxI4A8SGAkYf5DFyNOIBEYkMCKBEQn8BQmMBIy/IJyRTyMSGJHAiARGJPAHCbyyAsYf6Bp5GpHAiARGJDAigVeYBEYCxitMISPkvPwSCCEfI5CXgX7qVAhpRvCBLO2GLJB6SBki1KAytA7Ux1PD6yH/lqUJ6kImVCGv1Xc9jtwjEviXlsBIwPiXVu8Ic89LIOTRQS/eKxLIwXt5+hBSnpx5P/X1C8kyx7ruJznskK0446xdmPPMb/nFT87n+KNaOPaondSzghWOOU/9hjlP3oLF4Vx1OJAEb8FkCiU5bv5VrxG+RiQgux8RwogE/g0kYIzh+aCBScWxIcn6eGL2L1i5bgUnnrwbF571Adpbmthxp3dSKpXpbBxLVBpFc1sfRxw8jUuu/RjTp27FxZe9h2plLcaXwKcYq2VIPpWCAocwj9wjEvhXlcCIhf+ranaELxQhBGjbSPtFcuxJZrj99os47qht+Oqln+DIwyex1ZS92GTzfXjzWz9FHCVaNVR45slfMmXanmwYWIjRhpUNo9hi+7dxwKe/yT0P3Mak0eM5+6ydOeWYbbn4ko9x6y+vIal4BRAJPYVMY+lp5B6RwL+cBEYCxitUpSNkvQQSMEbbRBnO524/InIp99x3O7vs/DFWrLuXpsIEvvqd/YiMZ7Npr8dYj1dQWbh4FsEE1q9fg7NFvE/YYdu9iKKIn/z4SyQ663CuyHa7voUjD/4uP/nNJRQih3a1yKIaloiRa0QC/4oSGAkY/4paHeFpWAI6plDW77j8ss/wjS9/iPPPeAPHHnMj73nfEWzYMEgxDrS1wNK5jzNu0nj6B7oVMKwOvAe0sqipzdrhd6+zjq233BVrLC3lZXjj6O1bz3s/eAapqVGoew4+qImjD9ycM096rfoODz/yY0QC/3IS+LcKGP6PtgryfWe5FO1WBK+dC5X6ObyLAVWy0J+/kiXSub7nH3zi2dg2kCR5f30buV9REsikq8xLr+SK24CWB6xadzPLVjxFf2UeTzx+O0TN7Pqqd1ILdVw6iu/+8HhcaKGqzpGBrqisjagSSd8GolDDqL6lYyq/+e2lmKgTLUQYN2FXkjTi4Yd+SteYiI6WcbR09lJubJA8EjYaih5H7lesBOpJRlaXregmn/+CQCrdQb0mQ9KdpKuQmehzopXloMohIGxUr76Tt2f44RXL50tJmH0pkb3ycTmR6KX0ukpLlliCjCXzG/j+TWdwxvlv46knfsEVVx7GksWPyNdUcFGdSrJB7YychSEoozTarnCuIBwj9ytNAlYH0DY4Qi0mhA66Bx5mqFdK9gMUMsuN39qXyCR86P1XEiEHYIdYveoxsdHDppvsTlVOpNDayWClh8WsZf8bDUOuj8w3891v... (line truncated to 2000 chars)
-21:     "url": "./templates/text.paper"
-22:   },
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Certificate</text></svg>",
+    "url": "./templates/certificate.paper"
+  },
+  {
+    "id": "8feea4",
+    "name": "Letterhead + Logo A4",
+    "desc": "Custom company name + logo letterhead, suitable for business documents",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Logo</text></svg>",
+    "url": "./templates/text_logo.paper"
+  },
   {
     "id": "8f196f",
     "name": "Simple Red Header Template",
     "desc": "Custom header content, suitable for formal documents",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAGMCAYAAAABeb3ZAAAQAElEQVR4AeydB5xkVZn233tvpc7dk2eIQ85RkCBJBbNgWBR118CuEVZFl10XA/vtiiuIAZXVdQFBUREDICpIlCgjOec4wAQm9nSqcOt7ntNdPdU93TNVyO1bdfvpX9/qqrrnnvB/z3nOe95zq9ov60cEREAEIiLgm35EQAREICICEpiIwCpbERABMwmMekFiCahh8ROQwMRvA9VABBJLQAKTWNOqYSIQPwEJTPw2UA1EILEEJDARmVbZioAIKMirPiACIhAhAXkwEcJV1iIw3QlIYKZ7D1D7RaBeAnWkl8DUAUtJRUAE6iMggamPl1KLgAjUQUACUwcsJRUBEaiPgASmPl5KHTcBld9UBCQwTWUuVVYEmouABKa57KXaikBTEZDANJW5VFkRaC4CEph67KW0IiACdRGQwNSFS4lFQATqISCBqYeW0oqACNRFQAJTFy4lFoGkEoimXRKYaLgqVxEQARCQwACCfkVABKIhIIGJhqtyFQERAAEJDCDoN24CKj+pBCQwSbWs2iUCDUBAAtMARlAVRCCpBCQwSbWs2iUCDUBAAmMNYAVVQQQSSkACk1DDqlki0AgEJDCNYAXVQQQSSkACk1DDqlkiYGaxQ5DAxG4CVUAEkktAApNc26plIhA7AQlM7CZQBUQguQQkMMm1bdwtU/kiYBIYdQIREIHICEhgIkOrjEVABCQw6gMiIAKREUiqwEQGTBmLgAjUTkACUzsrpRQBEaiTgASmTmBKLgIiUDsBCUztrJRSBBqCQDNVQgLTTNZSXUWgyQhIYJrMYKquCDQTAQlMM1lLdRWBJiMggWkyg8VdXZUvAvUQkMDUQ0tpRUAE6iIggakLlxKLgAjUQ0ACUw8tpRUBEaiLQFMJTF0tU2IREIHYCUhgYjeBKiACySUggUmubdUyEYidgAQmdhOoAiJgZgmFIIFJqGHVLBFoBAISmEawguogAgklIIFJqGHVLBFoBAISmEawQtx1UPkiEBEBCUxEYJVtExIIy2ZlHPVUnel51HPNNEorgUmYscv5gpX7Bqw8VKh/sFSxKBdLZiUcEwweV8bAkJULRZSTtzKfM/1GxibrE65d59LXPYgr9UIZ4eq1Fvb2oW5h5d31f0t4jyKx/p3hZ2gD62w8P/zOhI+l5SutuHiZhev6zSbKZ4KrwtW9uGaphWvWTVwnXFMeAiPYpbrdw3xRX5yv5bc8mHftdu3YxAXO/rDJaBvYfrwO16FfwGa2ETttIuu6T0tg6kbW2BcM/fUBW/PdX9jgdX9Fh8RAGV9ddjZ0VtfBx5+rel24/3HLP/qMsWNXve2eDt5wp/We/zvL3/2IDVx9m6278A9WePBJCA5EzaXY8GHw1nts1Snft/7L/mzhWghEPZ0cg52DZuiuh23lF75nvedeahSDMaUgTeHJxVZ8YbmVKa4hBu/IUVq11gau/asVn35hcuEAl4Erb7UVJ37d+n76BwtXrhmT/WQvhv76oK349Bm29nu/sNKLL22YDPVi2eRUemm1VUSm+PBTVnhqMeqa3/CaCd7Jwx5rvvlTG7zpLpvIJqOXQET7fnut8Si+uByiVzKK0rqL/mRrvvVTy9/3uJWLxdHkUT+JX2CibuE0y98NxNvus+JzS0c7czWCELNz/+U3WP6eRyx0nk7eypxhqw6mGbjuduu/9HoMGnTS6gzwvPj8MicUhSees+KzS6z/DzcZn2/MQ8jusb15bS3We84lNnjjnShzCDlt4hcCwfYUn3reieZLJ/y3K4viWXxmiRnOj+bgezZ467229rs/h5gsssKjz1rhseFjaNEDTgQH/nyHhb3wNEYvWv+Eg5biVHxhmRWXvGThYC31K1vxuRettGSFEzZyqwjIaM6oVzBnhvVdcp0NXHObY85zZYgghbr4zIvmroHAbcyz... (line truncated to 2000 chars)
-35:     "url": "./templates/red_head.paper"
-36:   },
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Header</text></svg>",
+    "url": "./templates/red_head.paper"
+  },
+  {
+    "id": "student_id_card",
+    "name": "Student ID Card",
+    "desc": "Student ID card layout with photo placeholder",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Student ID</text></svg>",
+    "url": "./templates/student_id_card.paper"
+  },
+  {
+    "id": "badge_with_barcode",
+    "name": "Event Badge",
+    "desc": "Event badge with barcode area",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Badge</text></svg>",
+    "url": "./templates/badge_with_barcode.paper"
+  },
+  {
+    "id": "event_ticket",
+    "name": "Event Ticket",
+    "desc": "Event ticket with date and seat",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Ticket</text></svg>",
+    "url": "./templates/event_ticket.paper"
+  },
   {
     "id": "blank_a4",
     "name": "Blank A4",
     "desc": "Default settings, free layout",
     "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Blank</text></svg>"
-42:   }
-43: ]
+  }
+]

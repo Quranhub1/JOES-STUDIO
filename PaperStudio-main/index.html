@@ -554,6 +554,10 @@
                 <i class="ph ph-folder-open text-xl text-slate-400"></i>
                 <span class="font-medium">Open Paper File</span>
               </button>
+              <button onclick="App.ui.showModal('myTemplatesModal')" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
+                <i class="ph ph-files text-xl text-slate-400"></i>
+                <span class="font-medium">My Templates</span>
+              </button>
             </div>
           </div>
           <a
@@ -566,9 +570,34 @@
           <i class="ph ph-scroll absolute -bottom-5 -right-10 text-[200px] text-slate-800 opacity-50 rotate-12"></i>
         </div>
         <div class="w-2/3 p-8 bg-gray-50 flex flex-col">
-          <h2 class="text-lg font-bold text-slate-800 mb-4 flex justify-between items-center">Start from Templates</h2>
-          <div id="templateGrid" class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 custom-scrollbar"></div>
+          <div class="flex items-center gap-4 mb-4 border-b border-gray-200">
+            <button id="tabTemplates" onclick="App.ui.switchWelcomeTab('templates')" class="pb-2 text-sm font-bold text-red-600 border-b-2 border-red-600">Start from Templates</button>
+            <button id="tabRecents" onclick="App.ui.switchWelcomeTab('recents')" class="pb-2 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-700">Recents</button>
+          </div>
+          <div id="templatePanel" class="flex-1 flex flex-col overflow-hidden">
+            <div id="templateGrid" class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 custom-scrollbar"></div>
+          </div>
+          <div id="recentsPanel" class="hidden flex-1 flex flex-col overflow-hidden">
+            <div id="recentsGrid" class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 custom-scrollbar"></div>
+            <p id="noRecents" class="text-center text-gray-400 text-xs py-8">No recent projects yet</p>
+          </div>
         </div>
+      </div>
+    </div>
+    <div id="myTemplatesModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center modal-backdrop transition-opacity duration-200">
+      <div class="bg-white rounded-2xl shadow-2xl p-6 w-[700px] max-h-[80vh] flex flex-col relative">
+        <button onclick="App.ui.hideModal('myTemplatesModal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+        <h3 class="text-lg font-bold text-slate-800 mb-4">My Templates</h3>
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-xs text-slate-500">Your saved designs and recent files</p>
+          <button onclick="App.templates.saveCurrentAsTemplate()" class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition flex items-center gap-1">
+            <i class="ph ph-floppy-disk"></i> Save as Template
+          </button>
+        </div>
+        <div id="myTemplatesGrid" class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 custom-scrollbar flex-1"></div>
+        <p id="noMyTemplates" class="text-center text-gray-400 text-xs py-8">No saved templates yet</p>
       </div>
     </div>
     <div id="contactModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center modal-backdrop transition-opacity duration-200">
@@ -922,6 +951,18 @@
         <button onclick="App.ui.toggleFullScreen()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 text-md font-medium transition text-gray-600" title="Fullscreen Mode">
           <i id="fsIcon" class="ph ph-corners-out text-lg"></i>
         </button>
+        <div class="flex items-center gap-1 text-xs text-gray-500">
+          <label class="text-slate-500">Range</label>
+          <input type="number" id="printRangeFrom" value="1" min="1" class="w-10 compact-input border rounded text-center" title="Start page" />
+          <span>-</span>
+          <input type="number" id="printRangeTo" value="0" min="0" class="w-10 compact-input border rounded text-center" title="End page (0 = all)" />
+        </div>
+        <button onclick="App.io.exportPNG()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
+          <i class="ph ph-image text-lg"></i> PNG
+        </button>
+        <button onclick="App.io.exportAllPDFs()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition" title="Export each card/page as a separate PDF">
+          <i class="ph ph-files text-lg"></i> All PDFs
+        </button>
         <button onclick="App.io.exportPDF()" class="bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
           <i class="ph ph-file-pdf text-lg"></i> Export PDF
         </button>
@@ -1065,6 +1106,17 @@
                       <label class="compact-label">Label Height (mm)</label>
                       <input type="number" id="labelHeight" class="w-full compact-input border rounded" oninput="App.paper.autoLayoutLabels()" />
                     </div>
+                  </div>
+
+                  <div>
+                    <label class="compact-label">Avery Preset</label>
+                    <select id="averyPreset" onchange="App.paper.applyAveryPreset(this.value)" class="w-full border-gray-300 rounded-md border p-2 bg-gray-50">
+                      <option value="">None (Custom)</option>
+                      <option value="5160">Avery 5160 (2.625&quot; x 1&quot;, 3 cols x 10 rows)</option>
+                      <option value="5161">Avery 5161 (2&quot; x 4&quot;, 2 cols x 5 rows)</option>
+                      <option value="5870">Avery 5870 (2.25&quot; x 4&quot;, 2 cols x 5 rows)</option>
+                      <option value="5292">Avery 5292 (3.5&quot; x 2&quot;, 2 cols x 5 rows)</option>
+                    </select>
                   </div>
 
                   <div id="labelLayout" class="grid grid-cols gap-2">
@@ -2218,22 +2270,32 @@
                   </div>
                 </div>
 
-                <div class="flex-1 overflow-hidden flex flex-col">
-                  <div class="flex justify-between items-end mb-2 border-b border-gray-100 pb-1">
-                    <span class="font-bold text-xs text-slate-500">Field List</span>
-                    <span id="dsRowCount" class="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-mono">0 records</span>
-                  </div>
-                  <div class="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 rounded border border-gray-100 p-2">
-                    <ul id="dsFieldList" class="space-y-1"></ul>
-                  </div>
-                  <p class="text-[10px] text-slate-400 mt-2 leading-relaxed"><i class="ph ph-info"></i> Tip: Switch to"Properties"select text,Enable"Variable Data"to bind fields.</p>
-                </div>
+                 <div class="flex-1 overflow-hidden flex flex-col">
+                   <div class="flex justify-between items-end mb-2 border-b border-gray-100 pb-1">
+                     <span class="font-bold text-xs text-slate-500">Field List</span>
+                     <span id="dsRowCount" class="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-mono">0 records</span>
+                   </div>
+                   <div class="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 rounded border border-gray-100 p-2">
+                     <ul id="dsFieldList" class="space-y-1"></ul>
+                   </div>
+                   <p class="text-[10px] text-slate-400 mt-2 leading-relaxed"><i class="ph ph-info"></i> Tip: Switch to"Properties"select text,Enable"Variable Data"to bind fields.</p>
+                 </div>
 
-                <button
-                  onclick="App.dataSource.reloadFromFile()"
-                  class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
-                  <i class="ph ph-arrows-clockwise"></i> Reload File
-                </button>
+                 <button
+                   onclick="App.dataSource.autoMatchPhotos()"
+                   class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
+                   <i class="ph ph-image"></i> Auto-match photos
+                 </button>
+                 <label class="mt-2 flex items-center gap-2 cursor-pointer select-none">
+                   <input type="checkbox" id="autoMatchOnNav" class="accent-red-600 rounded scale-90" />
+                   <span class="text-xs text-slate-600">Auto-match on page change</span>
+                 </label>
+
+                 <button
+                   onclick="App.dataSource.reloadFromFile()"
+                   class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
+                   <i class="ph ph-arrows-clockwise"></i> Reload File
+                 </button>
                 <button
                   onclick="App.dataSource.importTemplateImage()"
                   class="mt-2 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
@@ -2636,6 +2698,7 @@
           editingBackground: false,
           printCurrentOnly: false,
           isReplacingObject: false,
+          _smartGuides: [],
           dataSource: {
             fileHandle: null,
             fileHandleId: null,
@@ -2659,6 +2722,20 @@
         },
 
         init: function () {
+          const saved = localStorage.getItem("joes_studio_autosave");
+          if (saved) {
+            try {
+              const data = JSON.parse(saved);
+              if (data && data.version) {
+                setTimeout(() => {
+                  Utils.toast("Recovered unsaved project from last session");
+                  this.loadProjectData(data);
+                }, 500);
+              }
+            } catch (e) {
+              console.warn("Autosave recovery failed", e);
+            }
+          }
           Coloris({
             el: "#floatBgInput",
             theme: "polaroid",
@@ -2827,6 +2904,71 @@
           this.events.initHotkeys();
           this.events.initEvents();
           if ("queryLocalFonts" in window) setTimeout(() => this.loadLocalFonts(), 1000);
+          setInterval(() => {
+            if (App.state.hasUnsavedChanges) {
+              try {
+                const settings = App.paper.getSettings();
+                const fitLabelEl = document.getElementById("fitLabelSize");
+                if (fitLabelEl) {
+                  settings.fitLabelSize = fitLabelEl.checked;
+                  if (settings.fitLabelSize && settings.type === "label") {
+                    const val = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+                    const intVal = (id) => parseInt(document.getElementById(id)?.value) || 1;
+                    settings.marginTop = val("marginTop") * CONFIG.MM_TO_PX;
+                    settings.marginBottom = val("marginBottom") * CONFIG.MM_TO_PX;
+                    settings.marginLeft = val("marginLeft") * CONFIG.MM_TO_PX;
+                    settings.marginRight = val("marginRight") * CONFIG.MM_TO_PX;
+                    settings.labelGapH = val("labelGapH");
+                    settings.labelGapV = val("labelGapV");
+                    settings.labelCols = intVal("labelCols");
+                    settings.labelRows = intVal("labelRows");
+                  }
+                }
+                let canvasData;
+                if (App.state.paperType === "label" && App.state.label.mode === "preview") {
+                  canvasData = typeof App.state.label.designContent === "string" ? JSON.parse(App.state.label.designContent) : App.state.label.designContent;
+                } else {
+                  canvasData = App.canvas.toJSON(CUSTOM_PROPS);
+                  canvasData.objects = canvasData.objects.filter((o) => !o.isGrid);
+                }
+                const dsState = App.state.dataSource;
+                const dsMeta =
+                  dsState.isActive && dsState.fileHandleId
+                    ? {
+                        fileName: dsState.fileName,
+                        currentSheet: dsState.currentSheet,
+                        fileHandleId: dsState.fileHandleId,
+                        imgDirId: dsState.imgDirId,
+                      }
+                    : null;
+                const typeLabel = App.paper.defaults[settings.type]?.label || "Design";
+                const blob = new Blob(
+                  [
+                    JSON.stringify({
+                      version: "4.2",
+                      timestamp: new Date().toISOString(),
+                      settings: settings,
+                      paperSize: document.getElementById("paperSize").value,
+                      thumbnail: App.canvas.toDataURL({
+                        format: "png",
+                        multiplier: 0.5,
+                      }),
+                      canvasData: canvasData,
+                      dataSource: dsMeta,
+                    }),
+                  ],
+                  { type: "application/json" }
+                );
+                const reader = new FileReader();
+                reader.onload = () => {
+                  localStorage.setItem("joes_studio_autosave", reader.result);
+                };
+                reader.readAsText(blob);
+              } catch (e) {
+                console.warn("Autosave failed", e);
+              }
+            }
+          }, 5000);
         },
 
         fontManager: {
@@ -3083,6 +3225,12 @@
                     },
                   },
                   {
+                    description: "CSV Data Files",
+                    accept: {
+                      "text/csv": [".csv"],
+                    },
+                  },
+                  {
                     description: "XML Data Files",
                     accept: {
                       "application/xml": [".xml"],
@@ -3208,8 +3356,35 @@
               App.state.dataSource.lastModified = file.lastModified;
               const arrayBuffer = await file.arrayBuffer();
               const isXML = handle.name.toLowerCase().endsWith(".xml");
+              const isCSV = handle.name.toLowerCase().endsWith(".csv");
               let workbook = null;
-              if (isXML) {
+              if (isCSV) {
+                const text = new TextDecoder().decode(arrayBuffer);
+                const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+                if (lines.length === 0) {
+                  Utils.toast("Import failed: CSV is empty", "error");
+                  this.close();
+                  return;
+                }
+                const delimiter = lines[0].includes("\t") ? "\t" : ",";
+                const headers = lines[0].split(delimiter).map((h) => String(h || "").trim());
+                const data = lines.slice(1).map((line) => {
+                  const values = line.split(delimiter);
+                  const obj = {};
+                  headers.forEach((h, i) => {
+                    obj[h] = values[i] !== undefined ? String(values[i]).trim() : "";
+                  });
+                  return obj;
+                });
+                workbook = {
+                  SheetNames: ["Sheet1"],
+                  Sheets: {
+                    Sheet1: {},
+                  },
+                  _parsedData: data,
+                  _parsedHeaders: headers,
+                };
+              } else if (isXML) {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(new TextDecoder().decode(arrayBuffer), "text/xml");
                 const root = xmlDoc.documentElement;
@@ -3245,7 +3420,7 @@
                   _parsedHeaders: headers,
                 };
               }
-              if (!isXML) {
+              if (!isCSV && !isXML) {
                 const workbookRaw = XLSX.read(arrayBuffer, {
                   type: "array",
                   cellNF: true,
@@ -3728,10 +3903,20 @@
             }
 
             if (!blobUrl) {
+              let initials = "";
+              const s = App.state.dataSource;
+              if (s.isActive && s.workbook && s.workbook._parsedData) {
+                const rowData = s.workbook._parsedData[App.state.currentDataIndex || 0];
+                if (rowData) {
+                  const nameVal = rowData["name"] || rowData["Name"] || rowData["NAME"] || "";
+                  if (nameVal) initials = this.getInitials(String(nameVal));
+                }
+              }
+              const displayText = initials || filename || "No bound field found";
               const errSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#f3f4f6">
-                            <rect width="100" height="100" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
-                            <text x="50" y="50" font-family="sans-serif" font-size="10" fill="#9ca3af" text-anchor="middle">Load Failed</text>
-                            <text x="50" y="62" font-family="sans-serif" font-size="10" fill="#9ca3af" text-anchor="middle">${filename || "No bound field found"}</text></svg>`;
+                              <rect width="100" height="100" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
+                              <text x="50" y="45" font-family="sans-serif" font-size="10" fill="#9ca3af" text-anchor="middle">${displayText}</text>
+                              <text x="50" y="60" font-family="sans-serif" font-size="8" fill="#9ca3af" text-anchor="middle">No Photo</text></svg>`;
               blobUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(errSvg);
             }
 
@@ -3755,6 +3940,10 @@
                 resolve();
               });
             });
+          },
+          getInitials: function (name) {
+            if (!name) return "";
+            return name.split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase()).join("").slice(0, 2);
           },
           _updateBarcodeAsync: async function (obj) {
             try {
@@ -3822,6 +4011,9 @@
                 break;
             }
             this.renderPage(next);
+            if (document.getElementById("autoMatchOnNav")?.checked) {
+              this.autoMatchPhotos();
+            }
           },
 
           updateNavUI: function () {
@@ -4055,11 +4247,33 @@
             try {
               const fileHandle = await handle.getFileHandle(filename);
               return await fileHandle.getFile();
-            } catch (e) {
-              return null;
-            }
-          },
-        },
+             } catch (e) {
+               return null;
+             }
+           },
+           autoMatchPhotos: async function () {
+             const s = App.state.dataSource;
+             if (!s.isActive || !s.workbook) return Utils.toast("Please load a data source first", "error");
+             const objs = App.canvas.getObjects();
+             const pageIndex = App.state.currentDataIndex || 0;
+             let count = 0;
+             for (const obj of objs) {
+               if (obj.type === "image" && obj.dataBinding && obj.dataBinding.type === "variable" && obj.imgDirId) {
+                 const filename = this._getBoundValue(obj, pageIndex);
+                 if (filename) {
+                   await this._updateImageAsync(obj, filename);
+                   count++;
+                 }
+               }
+             }
+             if (count > 0) {
+               App.canvas.requestRenderAll();
+               Utils.toast(`Matched ${count} photos`);
+             } else {
+               Utils.toast("No image objects with bindings found", "info");
+             }
+           },
+         },
 
         paper: {
           defaults: {
@@ -5301,6 +5515,24 @@
 
             el("labelWidth").value = newW;
             el("labelHeight").value = newH;
+             this.updateSettings();
+          },
+          applyAveryPreset: function (presetKey) {
+            if (!presetKey) return;
+            const el = (id) => document.getElementById(id);
+            const inchToMm = 25.4;
+            const presets = {
+              "5160": { w: 2.625, h: 1, cols: 3, rows: 10 },
+              "5161": { w: 2, h: 4, cols: 2, rows: 5 },
+              "5870": { w: 2.25, h: 4, cols: 2, rows: 5 },
+              "5292": { w: 3.5, h: 2, cols: 2, rows: 5 },
+            };
+            const p = presets[presetKey];
+            if (!p) return;
+            el("labelWidth").value = Math.round(p.w * inchToMm * 10) / 10;
+            el("labelHeight").value = Math.round(p.h * inchToMm * 10) / 10;
+            el("labelCols").value = p.cols;
+            el("labelRows").value = p.rows;
             this.updateSettings();
           },
           applyCardsPerPage: function (count) {
@@ -5480,6 +5712,56 @@
                     top: dragOrigin.top,
                   });
               }
+
+              if (e.transform?.action === "drag" || e.transform?.action === "scale") {
+                App.state._smartGuides.forEach((g) => App.canvas.remove(g));
+                App.state._smartGuides = [];
+                const threshold = 5;
+                const center = t.getCenterPoint();
+                const canvasCenter = { left: App.state.baseWidth / 2, top: App.state.baseHeight / 2 };
+                const snapX = Math.abs(center.x - canvasCenter.left) < threshold;
+                const snapY = Math.abs(center.y - canvasCenter.top) < threshold;
+                if (snapX) {
+                  t.set({ left: t.left + (canvasCenter.left - center.x) });
+                  const line = new fabric.Line([canvasCenter.left, 0, canvasCenter.left, App.state.baseHeight], {
+                    stroke: "#e11d48", strokeWidth: 1, strokeDashArray: [5, 5], selectable: false, evented: false
+                  });
+                  line.isSmartGuide = true;
+                  App.canvas.add(line);
+                  App.state._smartGuides.push(line);
+                }
+                if (snapY) {
+                  t.set({ top: t.top + (canvasCenter.top - center.y) });
+                  const line = new fabric.Line([0, canvasCenter.top, App.state.baseWidth, canvasCenter.top], {
+                    stroke: "#e11d48", strokeWidth: 1, strokeDashArray: [5, 5], selectable: false, evented: false
+                  });
+                  line.isSmartGuide = true;
+                  App.canvas.add(line);
+                  App.state._smartGuides.push(line);
+                }
+                App.canvas.getObjects().forEach((obj) => {
+                  if (obj === t || obj.isGrid || obj.isSmartGuide) return;
+                  const objCenter = obj.getCenterPoint();
+                  if (Math.abs(center.x - objCenter.x) < threshold) {
+                    t.set({ left: t.left + (objCenter.x - center.x) });
+                    const line = new fabric.Line([objCenter.x, 0, objCenter.x, App.state.baseHeight], {
+                      stroke: "#e11d48", strokeWidth: 1, strokeDashArray: [5, 5], selectable: false, evented: false
+                    });
+                    line.isSmartGuide = true;
+                    App.canvas.add(line);
+                    App.state._smartGuides.push(line);
+                  }
+                  if (Math.abs(center.y - objCenter.y) < threshold) {
+                    t.set({ top: t.top + (objCenter.y - center.y) });
+                    const line = new fabric.Line([0, objCenter.y, App.state.baseWidth, objCenter.y], {
+                      stroke: "#e11d48", strokeWidth: 1, strokeDashArray: [5, 5], selectable: false, evented: false
+                    });
+                    line.isSmartGuide = true;
+                    App.canvas.add(line);
+                    App.state._smartGuides.push(line);
+                  }
+                });
+              }
             };
             const handleObjectModified = (e) => {
               const t = e.target;
@@ -5527,6 +5809,8 @@
               }
               App.ui.updateInspector();
               App.canvas.requestRenderAll();
+              App.state._smartGuides.forEach((g) => App.canvas.remove(g));
+              App.state._smartGuides = [];
             };
             App.canvas.on({
               "mouse:down": (opt) => {
@@ -5740,6 +6024,7 @@
             bindModalClose("welcomeModal");
             bindModalClose("contactModal");
             bindModalClose("sponsorModal");
+            bindModalClose("myTemplatesModal");
             document.addEventListener("fullscreenchange", () => {
               const icon = document.getElementById("fsIcon");
               if (icon) {
@@ -5824,6 +6109,18 @@
             hotkeys("ctrl+shift+g,command+shift+g", (e) => {
               e.preventDefault();
               App.tools.ungroup();
+            });
+            hotkeys("ctrl+alt+c,command+alt+c", (e) => {
+              if (!isInput() && App.canvas.getActiveObject()) {
+                e.preventDefault();
+                App.io.copyStyle();
+              }
+            });
+            hotkeys("ctrl+alt+v,command+alt+v", (e) => {
+              if (!isInput() && App.canvas.getActiveObject()) {
+                e.preventDefault();
+                App.io.pasteStyle();
+              }
             });
           },
         },
@@ -8806,6 +9103,31 @@
               this.updateLayerList();
             }
           },
+          switchWelcomeTab: function (tab) {
+            const tabTemplates = document.getElementById("tabTemplates");
+            const tabRecents = document.getElementById("tabRecents");
+            const panelTemplates = document.getElementById("templatePanel");
+            const panelRecents = document.getElementById("recentsPanel");
+            if (tab === "templates") {
+              tabTemplates.classList.add("text-red-600", "border-red-600");
+              tabTemplates.classList.remove("text-slate-500", "border-transparent");
+              tabRecents.classList.remove("text-red-600", "border-red-600");
+              tabRecents.classList.add("text-slate-500", "border-transparent");
+              panelTemplates.classList.remove("hidden");
+              panelRecents.classList.add("hidden");
+            } else {
+              tabRecents.classList.add("text-red-600", "border-red-600");
+              tabRecents.classList.remove("text-slate-500", "border-transparent");
+              tabTemplates.classList.remove("text-red-600", "border-red-600");
+              tabTemplates.classList.add("text-slate-500", "border-transparent");
+              panelRecents.classList.remove("hidden");
+              panelTemplates.classList.add("hidden");
+              this.renderRecents();
+            }
+          },
+          renderRecents: function () {
+            App.templates.renderRecents();
+          },
 
           updateBind: async function (key, val) {
             const act = App.canvas.getActiveObject();
@@ -9077,7 +9399,18 @@
               })
               .join(""),
               
-          _createPrintIframe: function (content, css = "") {
+           _getPrintRange: function (totalPages) {
+            const fromEl = document.getElementById("printRangeFrom");
+            const toEl = document.getElementById("printRangeTo");
+            let from = fromEl ? parseInt(fromEl.value) || 1 : 1;
+            let to = toEl ? parseInt(toEl.value) || 0 : 0;
+            from = Math.max(1, Math.min(from, totalPages));
+            if (to === 0 || to > totalPages) to = totalPages;
+            to = Math.max(from, to);
+            return { from: from - 1, to: to - 1, count: to - from + 1 };
+          },
+
+           _createPrintIframe: function (content, css = "") {
             const id = "print-iframe-sandbox";
             let f = document.getElementById(id);
             if (f) f.remove();
@@ -9163,11 +9496,17 @@
             const shouldBatch = totalPages > 1 && !App.state.printCurrentOnly;
             const originalIndex = App.state.currentDataIndex;
             const originalLabelPage = App.state.label.previewPage || 0;
-            const loopCount = shouldBatch ? totalPages : 1;
+            let loopStart = 0, loopEnd = 0, loopCount = 1;
+            if (shouldBatch) {
+              const range = this._getPrintRange(totalPages);
+              loopStart = range.from;
+              loopEnd = range.to;
+              loopCount = range.count;
+            }
             const { w, h } = App.state.currentPaper;
             let allPagesHtml = "";
             try {
-              for (let i = 0; i < loopCount; i++) {
+              for (let i = loopStart; i <= loopEnd; i++) {
                 if (shouldBatch) {
                   if (isLabelPreview || isLabelDesign) {
                     App.state.label.previewPage = i;
@@ -9264,7 +9603,13 @@
               isLabelPreview = App.state.paperType === "label" && App.state.label.mode === "preview";
               const totalPages = App.dataSource.calculateTotalPages();
               shouldBatch = totalPages > 1 && !App.state.printCurrentOnly;
-              const loopCount = shouldBatch ? totalPages : 1;
+              let loopStart = 0, loopEnd = 0, loopCount = 1;
+              if (shouldBatch) {
+                const range = this._getPrintRange(totalPages);
+                loopStart = range.from;
+                loopEnd = range.to;
+                loopCount = range.count;
+              }
               const { w, h } = App.state.currentPaper;
               const orientation = w > h ? "l" : "p";
               const pdf = new window.jspdf.jsPDF({
@@ -9282,7 +9627,7 @@
 
               const settings = App.paper.getSettings();
               const typeLabel = App.paper.defaults[settings.type]?.label || "Design";
-              for (let i = 0; i < loopCount; i++) {
+              for (let i = loopStart; i <= loopEnd; i++) {
                 if (shouldBatch) {
                   if (isLabelPreview) {
                     App.state.label.previewPage = i;
@@ -9327,6 +9672,79 @@
                 App.fontManager.clearCache();
               }
 
+              App.ui.hideLoading();
+              if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = oldTxt;
+              }
+            }
+          },
+          exportPNG: function () {
+            const originalIndex = App.state.currentDataIndex;
+            const originalLabelPage = App.state.label.previewPage || 0;
+            const updateTasks = App.canvas.getObjects().map(async (o) => {
+              if (o.isDynamicDate && o.dateConfig) {
+                o.rawContent = Utils.formatDate(new Date(), null, o.dateConfig);
+                return App.content.render(o);
+              }
+            });
+            Promise.all(updateTasks).then(() => {
+              App.canvas.requestRenderAll();
+              const vC = App.canvas.toCanvasElement();
+              const dataUrl = vC.toDataURL("image/png");
+              const link = document.createElement("a");
+              link.download = `design_${Date.now()}.png`;
+              link.href = dataUrl;
+              link.click();
+              Utils.toast("PNG exported");
+            });
+          },
+
+          exportAllPDFs: async function () {
+            const btn = document.querySelector('button[onclick="App.io.exportAllPDFs()"]');
+            const oldTxt = btn ? btn.innerHTML : "";
+            if (btn) {
+              btn.disabled = true;
+              btn.innerHTML = `<i class="ph ph-spinner animate-spin"></i> Processing...`;
+            }
+            const originalIndex = App.state.currentDataIndex;
+            const originalLabelPage = App.state.label.previewPage || 0;
+            const totalPages = App.dataSource.calculateTotalPages();
+            if (totalPages <= 1) {
+              if (btn) { btn.disabled = false; btn.innerHTML = oldTxt; }
+              App.io.exportPDF();
+              return;
+            }
+            const range = this._getPrintRange(totalPages);
+            const { w, h } = App.state.currentPaper;
+            const orientation = w > h ? "l" : "p";
+            try {
+              for (let i = range.from; i <= range.to; i++) {
+                App.ui.showLoading(`Exporting card ${i + 1} of ${totalPages}...`);
+                await App.dataSource.renderPage(i);
+                const vC = await this._getExportCanvas();
+                vC.setViewportTransform([1, 0, 0, 1, 0, 0]);
+                const svg = vC.toSVG({
+                  suppressPreamble: true,
+                  viewBox: { x: 0, y: 0, width: App.state.baseWidth, height: App.state.baseHeight }
+                });
+                vC.dispose();
+                const pdf = new window.jspdf.jsPDF({
+                  orientation: orientation,
+                  unit: "mm",
+                  format: [w, h],
+                });
+                await pdf.svg(new DOMParser().parseFromString(svg, "image/svg+xml").documentElement, {
+                  x: 0, y: 0, width: w, height: h
+                });
+                pdf.save(`card_${i + 1}_${Date.now()}.pdf`);
+              }
+              Utils.toast(`Exported ${range.count} PDFs`);
+            } catch (e) {
+              console.error(e);
+              Utils.toast("Export failed: " + e.message, "error");
+            } finally {
+              App.dataSource.renderPage(originalIndex);
               App.ui.hideLoading();
               if (btn) {
                 btn.disabled = false;
@@ -9407,6 +9825,18 @@
             URL.revokeObjectURL(a.href);
             Utils.toast("Project saved");
             App.state.hasUnsavedChanges = false;
+            try {
+              const thumb = App.canvas.toDataURL({ format: "png", multiplier: 0.5 });
+              App.templates.saveRecent("Project " + new Date().toLocaleString(), thumb, JSON.stringify({
+                version: "4.2",
+                timestamp: new Date().toISOString(),
+                settings: settings,
+                paperSize: document.getElementById("paperSize").value,
+                thumbnail: thumb,
+                canvasData: canvasData,
+                dataSource: dsMeta,
+              }));
+            } catch {}
           },
 
           loadProjectData: function (data) {
@@ -9526,6 +9956,10 @@
                 App.state.hasUnsavedChanges = false;
                 App.ui.hideLoading();
                 Utils.toast("Project loaded successfully");
+                try {
+                  const thumb = App.canvas.toDataURL({ format: "png", multiplier: 0.5 });
+                  App.templates.saveRecent("Project " + new Date().toLocaleString(), thumb, JSON.stringify(data));
+                } catch {}
               };
               data.canvasData ? App.canvas.loadFromJSON(data.canvasData, done) : done();
             } catch (e) {
@@ -9611,7 +10045,43 @@
               App.ui.updateLayerList();
               App.ui.updateInspector();
               App.history.saveState();
-            }, CUSTOM_PROPS);
+             }, CUSTOM_PROPS);
+          },
+          copyStyle: function () {
+            const act = App.canvas.getActiveObject();
+            if (!act) return;
+            App.state.copiedStyle = {
+              fill: act.fill,
+              stroke: act.stroke,
+              strokeWidth: act.strokeWidth,
+              fontFamily: act.fontFamily,
+              fontSize: act.fontSize,
+              textColor: act.fill,
+              fontWeight: act.fontWeight,
+              fontStyle: act.fontStyle,
+              underline: act.underline,
+            };
+            Utils.toast("Style copied");
+          },
+          pasteStyle: function () {
+            const act = App.canvas.getActiveObject();
+            if (!act || !App.state.copiedStyle) return;
+            const s = App.state.copiedStyle;
+            const props = {};
+            if (s.fill !== undefined) props.fill = s.fill;
+            if (s.stroke !== undefined) props.stroke = s.stroke;
+            if (s.strokeWidth !== undefined) props.strokeWidth = s.strokeWidth;
+            if (s.fontFamily !== undefined) props.fontFamily = s.fontFamily;
+            if (s.fontSize !== undefined) props.fontSize = s.fontSize;
+            if (s.fontWeight !== undefined) props.fontWeight = s.fontWeight;
+            if (s.fontStyle !== undefined) props.fontStyle = s.fontStyle;
+            if (s.underline !== undefined) props.underline = s.underline;
+            act.set(props);
+            act.setCoords();
+            App.canvas.requestRenderAll();
+            App.ui.updateInspector();
+            App.history.saveState();
+            Utils.toast("Style pasted");
           },
         },
         
@@ -10058,6 +10528,7 @@
                   grid.appendChild(d);
                 });
               }
+              this.renderRecents();
             } catch {
               Utils.toast("Failed to load template", "error");
             }
@@ -10104,6 +10575,168 @@
                 App.ui.hideLoading();
               }
             }
+          },
+
+          getRecents: function () {
+            try {
+              const raw = localStorage.getItem("joes_studio_recents");
+              return raw ? JSON.parse(raw) : [];
+            } catch {
+              return [];
+            }
+          },
+
+          saveRecent: function (name, dataUrl, projectData) {
+            const recents = this.getRecents();
+            const entry = {
+              id: "recent_" + Date.now(),
+              name: name || "Untitled",
+              date: new Date().toISOString(),
+              thumbnail: dataUrl,
+              data: projectData,
+            };
+            recents.unshift(entry);
+            if (recents.length > 20) recents.pop();
+            localStorage.setItem("joes_studio_recents", JSON.stringify(recents));
+          },
+
+          deleteRecent: function (id) {
+            let recents = this.getRecents();
+            recents = recents.filter((r) => r.id !== id);
+            localStorage.setItem("joes_studio_recents", JSON.stringify(recents));
+            this.renderRecents();
+            this.renderMyTemplates();
+          },
+
+          saveCurrentAsTemplate: function () {
+            const settings = App.paper.getSettings();
+            const fitLabelEl = document.getElementById("fitLabelSize");
+            if (fitLabelEl) {
+              settings.fitLabelSize = fitLabelEl.checked;
+              if (settings.fitLabelSize && settings.type === "label") {
+                const val = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+                const intVal = (id) => parseInt(document.getElementById(id)?.value) || 1;
+                settings.marginTop = val("marginTop") * CONFIG.MM_TO_PX;
+                settings.marginBottom = val("marginBottom") * CONFIG.MM_TO_PX;
+                settings.marginLeft = val("marginLeft") * CONFIG.MM_TO_PX;
+                settings.marginRight = val("marginRight") * CONFIG.MM_TO_PX;
+                settings.labelGapH = val("labelGapH");
+                settings.labelGapV = val("labelGapV");
+                settings.labelCols = intVal("labelCols");
+                settings.labelRows = intVal("labelRows");
+              }
+            }
+            let canvasData;
+            if (App.state.paperType === "label" && App.state.label.mode === "preview") {
+              canvasData = typeof App.state.label.designContent === "string" ? JSON.parse(App.state.label.designContent) : App.state.label.designContent;
+            } else {
+              canvasData = App.canvas.toJSON(CUSTOM_PROPS);
+              canvasData.objects = canvasData.objects.filter((o) => !o.isGrid);
+            }
+            const dsState = App.state.dataSource;
+            const dsMeta =
+              dsState.isActive && dsState.fileHandleId
+                ? {
+                    fileName: dsState.fileName,
+                    currentSheet: dsState.currentSheet,
+                    fileHandleId: dsState.fileHandleId,
+                    imgDirId: dsState.imgDirId,
+                  }
+                : null;
+            const typeLabel = App.paper.defaults[settings.type]?.label || "Design";
+            const projectData = {
+              version: "4.2",
+              timestamp: new Date().toISOString(),
+              settings: settings,
+              paperSize: document.getElementById("paperSize").value,
+              thumbnail: App.canvas.toDataURL({ format: "png", multiplier: 0.5 }),
+              canvasData: canvasData,
+              dataSource: dsMeta,
+            };
+            const dataStr = JSON.stringify(projectData);
+            this.saveRecent("Template " + new Date().toLocaleString(), projectData.thumbnail, dataStr);
+            Utils.toast("Template saved");
+            this.renderMyTemplates();
+          },
+
+          renderMyTemplates: function () {
+            const grid = document.getElementById("myTemplatesGrid");
+            const noTemplates = document.getElementById("noMyTemplates");
+            if (!grid) return;
+            const recents = this.getRecents();
+            grid.innerHTML = "";
+            if (recents.length === 0) {
+              if (noTemplates) noTemplates.classList.remove("hidden");
+              return;
+            }
+            if (noTemplates) noTemplates.classList.add("hidden");
+            recents.forEach((r) => {
+              const d = document.createElement("div");
+              d.className = "template-card bg-white p-3 rounded-xl border border-gray-200 cursor-pointer transition flex flex-col gap-2 relative";
+              const dateStr = new Date(r.date).toLocaleString();
+              d.innerHTML = `<div class="h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">${
+                r.thumbnail ? `<img src="${r.thumbnail}" class="h-full w-auto object-contain">` : '<i class="ph ph-file-plus text-3xl text-gray-300"></i>'
+              }</div><div><h3 class="font-bold text-slate-700 text-sm">${r.name}</h3><p class="text-slate-400 text-xs">${dateStr}</p></div>`;
+              d.onclick = () => {
+                try {
+                  const projectData = typeof r.data === "string" ? JSON.parse(r.data) : r.data;
+                  App.io.loadProjectData(projectData);
+                  App.ui.hideModal("myTemplatesModal");
+                  App.ui.hideModal("welcomeModal");
+                } catch {
+                  Utils.toast("Failed to load template", "error");
+                }
+              };
+              const delBtn = document.createElement("button");
+              delBtn.className = "absolute top-2 right-2 p-1 bg-white/80 hover:bg-red-50 rounded-full text-slate-400 hover:text-red-500 transition";
+              delBtn.innerHTML = '<i class="ph ph-x"></i>';
+              delBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.deleteRecent(r.id);
+              };
+              d.appendChild(delBtn);
+              grid.appendChild(d);
+            });
+          },
+        },
+
+          renderRecents: function () {
+            const grid = document.getElementById("recentsGrid");
+            const noRecents = document.getElementById("noRecents");
+            if (!grid) return;
+            const recents = this.getRecents();
+            grid.innerHTML = "";
+            if (recents.length === 0) {
+              if (noRecents) noRecents.classList.remove("hidden");
+              return;
+            }
+            if (noRecents) noRecents.classList.add("hidden");
+            recents.forEach((r) => {
+              const d = document.createElement("div");
+              d.className = "template-card bg-white p-3 rounded-xl border border-gray-200 cursor-pointer transition flex flex-col gap-2 relative";
+              const dateStr = new Date(r.date).toLocaleString();
+              d.innerHTML = `<div class="h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">${
+                r.thumbnail ? `<img src="${r.thumbnail}" class="h-full w-auto object-contain">` : '<i class="ph ph-file-plus text-3xl text-gray-300"></i>'
+              }</div><div><h3 class="font-bold text-slate-700 text-sm">${r.name}</h3><p class="text-slate-400 text-xs">${dateStr}</p></div>`;
+              d.onclick = () => {
+                try {
+                  const projectData = typeof r.data === "string" ? JSON.parse(r.data) : r.data;
+                  App.io.loadProjectData(projectData);
+                  App.ui.hideModal("welcomeModal");
+                } catch {
+                  Utils.toast("Failed to load recent project", "error");
+                }
+              };
+              const delBtn = document.createElement("button");
+              delBtn.className = "absolute top-2 right-2 p-1 bg-white/80 hover:bg-red-50 rounded-full text-slate-400 hover:text-red-500 transition";
+              delBtn.innerHTML = '<i class="ph ph-x"></i>';
+              delBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.deleteRecent(r.id);
+              };
+              d.appendChild(delBtn);
+              grid.appendChild(d);
+            });
           },
         },
 
