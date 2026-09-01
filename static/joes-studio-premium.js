@@ -1,4 +1,4 @@
-/* Joes Studio Premium activation — v2 universal-key mode. */
+/* Joes Studio Pro activation — v3 unified Pro button mode. */
 (function(){
   'use strict';
 
@@ -22,12 +22,12 @@
   async function activate(raw) {
     if (!window.crypto?.subtle) throw new Error('Secure activation is not supported by this browser.');
     const key = normalize(raw);
-    if (!key) throw new Error('Enter your Premium activation key.');
+    if (!key) throw new Error('Enter your Pro activation key.');
     if (!KEY_PATTERN.test(key)) throw new Error('The activation key must contain letters and numbers only.');
-    if (key.length < 24 || key.length > 64) throw new Error('Invalid Premium activation key.');
+    if (key.length < 24 || key.length > 64) throw new Error('Invalid Pro activation key.');
 
     const hash = await sha256(key);
-    if (hash !== UNIVERSAL_KEY_SHA256) throw new Error('Invalid Premium activation key.');
+    if (hash !== UNIVERSAL_KEY_SHA256) throw new Error('Invalid Pro activation key.');
 
     localStorage.setItem(STORE, 'activated');
     return true;
@@ -43,8 +43,8 @@
     m.innerHTML = '<div class="absolute inset-0 bg-black/60"></div>' +
       '<div class="relative w-full max-w-md rounded-2xl bg-white shadow-2xl p-5">' +
       '<h2 class="text-lg font-bold">Joes Studio Pro</h2>' +
-      '<p class="text-sm text-gray-600 mt-1">Enter your Pro activation key to unlock Premium tools.</p>' +
-      '<input id="jspPremiumKey" maxlength="64" autocapitalize="none" spellcheck="false" class="w-full border rounded-xl px-4 py-3 mt-4" placeholder="Enter activation key" autocomplete="off">' +
+      '<p class="text-sm text-gray-600 mt-1">Enter your Pro activation key to unlock Pro tools.</p>' +
+      '<input id="jspPremiumKey" maxlength="64" autocapitalize="none" spellcheck="false" class="w-full border rounded-xl px-4 py-3 mt-4" placeholder="Enter Pro activation key" autocomplete="off">' +
       '<div id="jspPremiumStatus" class="hidden text-sm rounded-lg p-3 mt-3"></div>' +
       '<div class="flex justify-end gap-2 mt-4">' +
       '<button id="jspPremiumCancel" class="px-4 py-2 border rounded-lg">Cancel</button>' +
@@ -82,17 +82,39 @@
     input.focus();
   }
 
-  wait(() => window.JoesStudioPro && document.getElementById('jspLauncher'), () => {
-    const open = window.JoesStudioPro.openPanel.bind(window.JoesStudioPro);
+  function findAuthorButton() {
+    const buttons = Array.from(document.querySelectorAll('button'));
+    return buttons.find(b => /support\s+author/i.test((b.textContent || '').trim()));
+  }
+
+  function installUnifiedButton() {
+    const existing = findAuthorButton();
+    const generated = document.getElementById('jspLauncher');
+    const button = existing || generated;
+    if (!button) return false;
+
+    // The old Support Author control is the single permanent home for Pro.
+    if (generated && generated !== existing) generated.remove();
+
+    button.id = 'jspLauncher';
+    button.removeAttribute('onclick');
+    button.title = active() ? 'Open Pro Tools' : 'Activate Pro';
+    button.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 transition text-xs font-bold mr-1';
+    button.innerHTML = active()
+      ? '<i class="ph ph-crown text-lg"></i><span>Pro Tools</span>'
+      : '<i class="ph ph-crown text-lg"></i><span>Pro</span>';
+    button.onclick = () => window.JoesStudioPremium.open();
+    return true;
+  }
+
+  wait(() => window.JoesStudioPro && (document.getElementById('jspLauncher') || findAuthorButton()), () => {
     window.JoesStudioPremium = {
       isActivated: active,
       activate,
-      openPro: open,
-      open: async () => active() ? open() : dialog()
+      openPro: window.JoesStudioPro.openPanel.bind(window.JoesStudioPro),
+      open: async () => active() ? window.JoesStudioPro.openPanel() : dialog()
     };
 
-    const button = document.getElementById('jspLauncher');
-    button.textContent = active() ? 'Pro Tools' : 'Activate Pro';
-    button.onclick = () => window.JoesStudioPremium.open();
+    installUnifiedButton();
   });
 })();
