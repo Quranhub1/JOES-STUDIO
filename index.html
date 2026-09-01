@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>joes studio - Print Paper Design Tool</title>
+    <link rel="icon" type="image/svg+xml" href="./static/joes-studio-logo.svg" />
     <link href="./static/icons.min.css" rel="stylesheet" />
     <link href="./static/coloris.min.css" rel="stylesheet" />
     <link href="./static/toastify.min.css" rel="stylesheet" />
@@ -537,8 +538,8 @@
         <div class="w-1/3 bg-slate-900 text-white p-8 flex flex-col justify-between relative overflow-hidden">
           <div class="relative z-10">
             <div class="flex items-center gap-3 mb-8">
-              <div class="bg-red-600 text-white p-2 rounded-lg">
-                <i class="ph ph-article text-3xl"></i>
+              <div class="bg-red-600 text-white p-1.5 rounded-lg">
+                <img src="./static/joes-studio-logo.svg" class="h-10 w-10" alt="joes studio logo" />
               </div>
               <div>
                 <h1 class="text-xl font-bold tracking-tight">joes studio</h1>
@@ -822,7 +823,7 @@
     <header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 shadow-sm z-30 shrink-0 text-sm whitespace-nowrap">
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-2 text-slate-800 cursor-pointer" onclick="App.ui.showModal('welcomeModal')">
-          <i class="ph ph-scroll text-2xl text-red-600"></i>
+          <img src="./static/joes-studio-logo.svg" class="h-7 w-7" alt="joes studio logo" />
           <span class="font-bold tracking-tight">joes studio</span>
         </div>
         <div class="flex items-center gap-1">
@@ -10370,7 +10371,8 @@
         }
       };
     </script>
-    <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 text-center text-xs text-gray-500 z-30">
+    <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 text-center text-xs text-gray-500 z-30 flex items-center justify-center gap-2">
+      <img src="./static/joes-studio-logo.svg" class="h-4 w-4" alt="joes studio logo" />
       Developed by joes technologies
     </footer>
   </body>
