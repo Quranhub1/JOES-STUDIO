@@ -1,0 +1,64 @@
+[
+  {
+    "id": "standard_a4",
+    "name": "Standard Letter A4",
+    "desc": "Classic official document style, suitable for formal documents",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>A4</text></svg>",
+    "url": "./templates/standard_a4.paper"
+  },
+  {
+    "id": "a9276b",
+    "name": "Letterhead A4",
+    "desc": "Custom company name letterhead, suitable for business documents",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Letterhead</text></svg>",
+    "url": "./templates/text.paper"
+  },
+  {
+    "id": "8f4ed4",
+    "name": "Certificate",
+    "desc": "Custom print example",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Certificate</text></svg>",
+    "url": "./templates/certificate.paper"
+  },
+  {
+    "id": "8feea4",
+    "name": "Letterhead + Logo A4",
+    "desc": "Custom company name + logo letterhead, suitable for business documents",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Logo</text></svg>",
+    "url": "./templates/text_logo.paper"
+  },
+  {
+    "id": "8f196f",
+    "name": "Simple Red Header Template",
+    "desc": "Custom header content, suitable for formal documents",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Header</text></svg>",
+    "url": "./templates/red_head.paper"
+  },
+  {
+    "id": "student_id_card",
+    "name": "Student ID Card",
+    "desc": "Student ID card layout with photo placeholder",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Student ID</text></svg>",
+    "url": "./templates/student_id_card.paper"
+  },
+  {
+    "id": "badge_with_barcode",
+    "name": "Event Badge",
+    "desc": "Event badge with barcode area",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Badge</text></svg>",
+    "url": "./templates/badge_with_barcode.paper"
+  },
+  {
+    "id": "event_ticket",
+    "name": "Event Ticket",
+    "desc": "Event ticket with date and seat",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Ticket</text></svg>",
+    "url": "./templates/event_ticket.paper"
+  },
+  {
+    "id": "blank_a4",
+    "name": "Blank A4",
+    "desc": "Default settings, free layout",
+    "thumbnail": "data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'><rect width='100' height='140' fill='white' stroke='%23ddd'/><text x='50' y='70' font-size='10' text-anchor='middle' fill='%23999'>Blank</text></svg>"
+  }
+]
