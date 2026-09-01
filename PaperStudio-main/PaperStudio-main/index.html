@@ -599,7 +599,7 @@
 
         <h3 class="text-xl font-bold text-slate-800 mb-2">Access Required</h3>
         <p class="text-sm text-slate-500 mb-1">To read data source files, your browser needs your confirmation.</p>
-        <p class="text-xs font-mono bg-gray-100 text-gray-600 py-1 px-2 rounded inline-block mb-6 max-w-full truncate" id="permFileName">filename</p>
+        <p class="text-xs font-mono bg-gray-100 text-gray-600 py-1 px-2 rounded inline-block mb-6 max-w-full truncate" id="permFileName">filename.xlsx</p>
 
         <div class="flex gap-3 justify-center">
           <button id="permCancelBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-slate-600 hover:bg-gray-50 text-sm font-medium transition">Cancel</button>
@@ -1000,28 +1000,7 @@
                 <select id="paperType" onchange="App.paper.changeType(this.value, true)" class="w-full border-gray-300 rounded-md border p-2 bg-gray-50">
                   <option value="blank" selected>Blank Paper</option>
                 </select>
-                <div>
-                <label class="compact-label">Cards Per Page</label>
-                <select id="cardsPerPage" onchange="App.paper.applyCardsPerPage(this.value)" class="w-full border-gray-300 rounded-md border p-2 bg-gray-50">
-                  <option value="1">1 per page</option>
-                  <option value="2">2 per page</option>
-                  <option value="3">3 per page</option>
-                  <option value="4" selected>4 per page</option>
-                  <option value="6">6 per page</option>
-                  <option value="9">9 per page</option>
-                  <option value="12">12 per page</option>
-                  <option value="custom">Custom...</option>
-                </select>
               </div>
-              <div id="customCardsInput" class="hidden">
-                <label class="compact-label">Custom Rows x Columns</label>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="number" id="customCardRows" min="1" value="2" class="w-full compact-input border rounded" />
-                  <input type="number" id="customCardCols" min="1" value="2" class="w-full compact-input border rounded" />
-                </div>
-                <button onclick="App.paper.applyCustomCards()" class="mt-2 w-full py-1.5 bg-slate-800 text-white rounded text-xs font-medium hover:bg-slate-700 transition">Apply Custom Grid</button>
-              </div>
-            </div>
 
               <div class="flex items-center gap-2">
                 <div class="flex-1">
@@ -2180,22 +2159,19 @@
                   <i class="ph ph-microsoft-excel-logo text-3xl text-green-600"></i>
                 </div>
                 <div>
-                  <h3 class="font-bold text-slate-700">Import Data Source</h3>
-                  <p class="text-xs text-gray-400 mt-1">Supports Excel (.xlsx/.xls) and XML formats</p>
+                  <h3 class="font-bold text-slate-700">Import Excel Data</h3>
+                  <p class="text-xs text-gray-400 mt-1">Supports .xlsx / .xls formats</p>
                 </div>
                 <button onclick="App.dataSource.openFile()" class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition text-xs font-medium flex items-center gap-2">
                   <i class="ph ph-file-plus"></i> Select Local File
-                </button>
-                <button onclick="App.dataSource.importTemplateImage()" class="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition text-xs font-medium flex items-center gap-2">
-                  <i class="ph ph-image"></i> Import Template Image
                 </button>
               </div>
               <div id="dataLoadedState" class="hidden flex-col h-full">
                 <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4">
                   <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2 overflow-hidden">
-                      <i class="ph ph-file text-green-600 text-lg shrink-0"></i>
-                      <span id="dsFileName" class="font-bold text-xs truncate" title="File Name">filename</span>
+                      <i class="ph ph-file-xls text-green-600 text-lg shrink-0"></i>
+                      <span id="dsFileName" class="font-bold text-xs truncate" title="File Name">filename.xlsx</span>
                     </div>
                     <button onclick="App.dataSource.close()" class="text-slate-400 hover:text-red-500 transition shrink-0" title="Disconnect">
                       <i class="ph ph-trash"></i>
@@ -2233,11 +2209,6 @@
                   onclick="App.dataSource.reloadFromFile()"
                   class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
                   <i class="ph ph-arrows-clockwise"></i> Reload File
-                </button>
-                <button
-                  onclick="App.dataSource.importTemplateImage()"
-                  class="mt-2 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
-                  <i class="ph ph-image"></i> Import Template Image
                 </button>
               </div>
             </div>
@@ -3082,13 +3053,6 @@
                       "application/vnd.ms-excel": [".xls"],
                     },
                   },
-                  {
-                    description: "XML Data Files",
-                    accept: {
-                      "application/xml": [".xml"],
-                      "text/xml": [".xml"],
-                    },
-                  },
                 ],
                 multiple: false,
               });
@@ -3207,55 +3171,14 @@
 
               App.state.dataSource.lastModified = file.lastModified;
               const arrayBuffer = await file.arrayBuffer();
-              const isXML = handle.name.toLowerCase().endsWith(".xml");
-              let workbook = null;
-              if (isXML) {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(new TextDecoder().decode(arrayBuffer), "text/xml");
-                const root = xmlDoc.documentElement;
-                const rows = Array.from(root.children);
-                if (rows.length === 0) {
-                  Utils.toast("Import failed: XML is empty", "error");
-                  this.close();
-                  return;
-                }
-                const headers = Array.from(rows[0].attributes).map(a => a.name);
-                const data = rows.map(row => {
-                  const obj = {};
-                  headers.forEach(h => {
-                    const attr = row.getAttribute(h);
-                    obj[h] = attr !== null ? attr : "";
-                  });
-                  Array.from(row.children).forEach(child => {
-                    if (!headers.includes(child.tagName)) {
-                      headers.push(child.tagName);
-                    }
-                    obj[child.tagName] = child.textContent || "";
-                  });
-                  return obj;
-                });
-                workbook = {
-                  SheetNames: ["Sheet1"],
-                  Sheets: {
-                    Sheet1: {
-                      "!ref": `A1:${String.fromCharCode(64 + headers.length)}${data.length + 1}`,
-                    },
-                  },
-                  _parsedData: data,
-                  _parsedHeaders: headers,
-                };
-              }
-              if (!isXML) {
-                const workbookRaw = XLSX.read(arrayBuffer, {
-                  type: "array",
-                  cellNF: true,
-                  cellStyles: true,
-                  cellText: true,
-                  cellDates: false,
-                  cellFormula: false,
-                });
-                workbook = workbookRaw;
-              }
+              const workbook = XLSX.read(arrayBuffer, {
+                type: "array",
+                cellNF: true,
+                cellStyles: true,
+                cellText: true,
+                cellDates: false,
+                cellFormula: false,
+              });
               const validSheetNames = workbook.SheetNames.filter((name) => {
                 const ws = workbook.Sheets[name];
                 return ws["!ref"];
@@ -3301,21 +3224,6 @@
           processCurrentSheet: function (skipRender = false) {
             const s = App.state.dataSource;
             if (!s.isActive || !s.workbook) return;
-            if (s.workbook._parsedData) {
-              s.data = s.workbook._parsedData;
-              s.headers = s.workbook._parsedHeaders || [];
-              let idx = parseInt(App.state.currentDataIndex) || 0;
-              if (idx >= s.data.length) idx = 0;
-              if (idx < 0) idx = 0;
-              App.state.currentDataIndex = idx;
-              if (!skipRender) {
-                this.renderPage(idx);
-                this.updateUI();
-              } else {
-                this.updateUI();
-              }
-              return;
-            }
             const worksheet = s.workbook.Sheets[s.currentSheet];
             const jsonHeader = XLSX.utils.sheet_to_json(worksheet, {
               header: 1,
@@ -3347,24 +3255,19 @@
             const s = App.state.dataSource;
             s.currentSheet = sheetName;
             if (s.isActive && s.workbook) {
-              if (s.workbook._parsedData) {
-                s.headers = s.workbook._parsedHeaders || [];
-                s.data = s.workbook._parsedData;
-              } else {
-                const worksheet = s.workbook.Sheets[sheetName];
-                const jsonHeader = XLSX.utils.sheet_to_json(worksheet, {
-                  header: 1,
+              const worksheet = s.workbook.Sheets[sheetName];
+              const jsonHeader = XLSX.utils.sheet_to_json(worksheet, {
+                header: 1,
+              });
+              s.data = [];
+              s.headers = [];
+              if (jsonHeader.length > 0) {
+                s.headers = jsonHeader[0].map((h) => String(h || "").trim());
+                s.data = XLSX.utils.sheet_to_json(worksheet, {
+                  raw: false,
+                  dateNF: "yyyy-mm-dd",
+                  defval: "",
                 });
-                s.data = [];
-                s.headers = [];
-                if (jsonHeader.length > 0) {
-                  s.headers = jsonHeader[0].map((h) => String(h || "").trim());
-                  s.data = XLSX.utils.sheet_to_json(worksheet, {
-                    raw: false,
-                    dateNF: "yyyy-mm-dd",
-                    defval: "",
-                  });
-                }
               }
             }
 
@@ -3404,14 +3307,10 @@
                 if (boundSheetName) break;
               }
 
-              if (boundSheetName && (s.workbook.Sheets[boundSheetName] || s.workbook._parsedData)) {
+              if (boundSheetName && s.workbook.Sheets[boundSheetName]) {
                 if (!this._sheetCache) this._sheetCache = {};
                 if (!this._sheetCache[boundSheetName]) {
-                  if (s.workbook._parsedData) {
-                    this._sheetCache[boundSheetName] = s.workbook._parsedData;
-                  } else {
-                    this._sheetCache[boundSheetName] = XLSX.utils.sheet_to_json(s.workbook.Sheets[boundSheetName]);
-                  }
+                  this._sheetCache[boundSheetName] = XLSX.utils.sheet_to_json(s.workbook.Sheets[boundSheetName]);
                 }
                 const len = this._sheetCache[boundSheetName].length;
                 if (len > 0) return len;
@@ -3577,17 +3476,13 @@
               });
               sheetsToCache.forEach((sheetName) => {
                 if (!this._sheetCache[sheetName]) {
-                  if (s.workbook._parsedData) {
-                    this._sheetCache[sheetName] = s.workbook._parsedData;
-                  } else {
-                    const ws = s.workbook.Sheets[sheetName];
-                    if (ws) {
-                      this._sheetCache[sheetName] = XLSX.utils.sheet_to_json(ws, {
-                        raw: false,
-                        dateNF: "yyyy-mm-dd",
-                        defval: "",
-                      });
-                    }
+                  const ws = s.workbook.Sheets[sheetName];
+                  if (ws) {
+                    this._sheetCache[sheetName] = XLSX.utils.sheet_to_json(ws, {
+                      raw: false,
+                      dateNF: "yyyy-mm-dd",
+                      defval: "",
+                    });
                   }
                 }
               });
@@ -3662,19 +3557,15 @@
             const s = App.state.dataSource;
             const targetSheet = binding.sheet || s.currentSheet;
             if (!this._sheetCache[targetSheet]) {
-              if (s.workbook?._parsedData) {
-                this._sheetCache[targetSheet] = s.workbook._parsedData;
+              const ws = s.workbook?.Sheets[targetSheet];
+              if (ws) {
+                this._sheetCache[targetSheet] = XLSX.utils.sheet_to_json(ws, {
+                  raw: false,
+                  dateNF: "yyyy-mm-dd",
+                  defval: "",
+                });
               } else {
-                const ws = s.workbook?.Sheets[targetSheet];
-                if (ws) {
-                  this._sheetCache[targetSheet] = XLSX.utils.sheet_to_json(ws, {
-                    raw: false,
-                    dateNF: "yyyy-mm-dd",
-                    defval: "",
-                  });
-                } else {
-                  return null;
-                }
+                return null;
               }
             }
 
@@ -3897,55 +3788,6 @@
               this.close();
             }
           },
-          importTemplateImage: async function () {
-            try {
-              const [handle] = await window.showOpenFilePicker({
-                types: [
-                  {
-                    description: "Image Files",
-                    accept: {
-                      "image/png": [".png"],
-                      "image/jpeg": [".jpg", ".jpeg"],
-                      "image/webp": [".webp"],
-                    },
-                  },
-                ],
-                multiple: false,
-              });
-              const file = await handle.getFile();
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                const dataUrl = e.target.result;
-                const img = new Image();
-                img.onload = () => {
-                  const canvas = App.canvas;
-                  const currentSettings = App.paper.getSettings();
-                  const scale = Math.min(currentSettings.w / img.width, currentSettings.h / img.height);
-                  const fabricImg = new fabric.Image(img, {
-                    left: (currentSettings.w / 2 - (img.width * scale) / 2) / 3.7795,
-                    top: (currentSettings.h / 2 - (img.height * scale) / 2) / 3.7795,
-                    scaleX: scale / 3.7795,
-                    scaleY: scale / 3.7795,
-                    selectable: false,
-                    evented: false,
-                  });
-                  canvas.add(fabricImg);
-                  fabricImg.sendToBack();
-                  canvas.setBackgroundColor("", canvas.requestRenderAll.bind(canvas));
-                  App.history.saveState();
-                  Utils.toast("Template image imported");
-                };
-                img.src = dataUrl;
-              };
-              reader.readAsDataURL(file);
-            } catch (err) {
-              if (err.name !== "AbortError") {
-                console.error(err);
-                Utils.toast("Failed to import image", "error");
-              }
-            }
-          },
-
           selectImageDir: async function () {
             const act = App.canvas.getActiveObject();
             if (!act || act.type !== "image") return Utils.toast("Please select an image object first", "error");
@@ -5302,64 +5144,6 @@
             el("labelWidth").value = newW;
             el("labelHeight").value = newH;
             this.updateSettings();
-          },
-          applyCardsPerPage: function (count) {
-            if (count === "custom") {
-              document.getElementById("customCardsInput").classList.remove("hidden");
-              return;
-            }
-            document.getElementById("customCardsInput").classList.add("hidden");
-            const el = (id) => document.getElementById(id);
-            const num = parseInt(count) || 1;
-            const sizeKey = el("paperSize").value;
-            const isLand = el("paperOrientation").checked;
-            let sheetW, sheetH;
-            if (sizeKey === "CUSTOM") {
-              sheetW = parseFloat(el("customW").value) || 210;
-              sheetH = parseFloat(el("customH").value) || 297;
-            } else {
-              const s = CONFIG.SIZES[sizeKey] || CONFIG.SIZES["A4"];
-              sheetW = s.w;
-              sheetH = s.h;
-            }
-            const finalSheetW = isLand ? Math.max(sheetW, sheetH) : Math.min(sheetW, sheetH);
-            const finalSheetH = isLand ? Math.min(sheetW, sheetH) : Math.max(sheetW, sheetH);
-            const aspect = finalSheetW / finalSheetH;
-            let cols, rows;
-            if (num === 1) { cols = 1; rows = 1; }
-            else if (num === 2) { cols = isLand ? 2 : 1; rows = isLand ? 1 : 2; }
-            else if (num === 3) { cols = isLand ? 3 : 1; rows = isLand ? 1 : 3; }
-            else if (num === 4) { cols = 2; rows = 2; }
-            else if (num === 6) { cols = isLand ? 3 : 2; rows = isLand ? 2 : 3; }
-            else if (num === 9) { cols = 3; rows = 3; }
-            else if (num === 12) { cols = isLand ? 4 : 3; rows = isLand ? 3 : 4; }
-            else {
-              cols = Math.ceil(Math.sqrt(num * aspect));
-              rows = Math.ceil(num / cols);
-              if (cols * rows > num) {
-                const altCols = Math.ceil(num / rows);
-                const altRows = Math.ceil(num / altCols);
-                if (altCols * altRows >= num && (altCols / altRows) <= (cols / rows)) {
-                  cols = altCols;
-                  rows = altRows;
-                }
-              }
-            }
-            el("paperType").value = "label";
-            App.paper.changeType("label", true);
-            el("labelCols").value = cols;
-            el("labelRows").value = rows;
-            App.paper.calcLabelSizeFromGrid();
-          },
-          applyCustomCards: function () {
-            const el = (id) => document.getElementById(id);
-            const rows = parseInt(el("customCardRows").value) || 1;
-            const cols = parseInt(el("customCardCols").value) || 1;
-            el("paperType").value = "label";
-            App.paper.changeType("label", true);
-            el("labelCols").value = cols;
-            el("labelRows").value = rows;
-            App.paper.calcLabelSizeFromGrid();
           },
         },
 
@@ -8565,16 +8349,12 @@
                 headers = ds.headers;
               } else {
                 try {
-                  if (ds.workbook._parsedData) {
-                    headers = ds.workbook._parsedHeaders || [];
-                  } else {
-                    const ws = ds.workbook.Sheets[targetSheet];
-                    if (ws) {
-                      const json = XLSX.utils.sheet_to_json(ws, {
-                        header: 1,
-                      });
-                      if (json.length > 0) headers = json[0].map((h) => String(h || "").trim());
-                    }
+                  const ws = ds.workbook.Sheets[targetSheet];
+                  if (ws) {
+                    const json = XLSX.utils.sheet_to_json(ws, {
+                      header: 1,
+                    });
+                    if (json.length > 0) headers = json[0].map((h) => String(h || "").trim());
                   }
                 } catch (e) {}
               }
@@ -8814,18 +8594,11 @@
             const ds = App.state.dataSource;
             if (key === "sheet" && ds.workbook) {
               try {
-                if (ds.workbook._parsedData) {
-                  const headers = ds.workbook._parsedHeaders || [];
-                  if (!headers.includes(act.dataBinding.field)) {
-                    act.dataBinding.field = headers.length ? headers[0] : "";
-                  }
-                } else {
-                  const worksheet = ds.workbook.Sheets[val];
-                  const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                  const headers = json.length ? json[0].map((h) => String(h || "").trim()) : [];
-                  if (!headers.includes(act.dataBinding.field)) {
-                    act.dataBinding.field = headers.length ? headers[0] : "";
-                  }
+                const worksheet = ds.workbook.Sheets[val];
+                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                const headers = json.length ? json[0].map((h) => String(h || "").trim()) : [];
+                if (!headers.includes(act.dataBinding.field)) {
+                  act.dataBinding.field = headers.length ? headers[0] : "";
                 }
               } catch (e) {
                 console.warn("Sheet switch error:", e);
@@ -8837,17 +8610,13 @@
               const targetField = act.dataBinding.field;
               if (!App.dataSource._sheetCache) App.dataSource._sheetCache = {};
               if (!App.dataSource._sheetCache[targetSheet]) {
-                if (ds.workbook._parsedData) {
-                  App.dataSource._sheetCache[targetSheet] = ds.workbook._parsedData;
-                } else {
-                  const ws = ds.workbook.Sheets[targetSheet];
-                  if (ws) {
-                    App.dataSource._sheetCache[targetSheet] = XLSX.utils.sheet_to_json(ws, {
-                      raw: false,
-                      dateNF: "yyyy-mm-dd",
-                      defval: "",
-                    });
-                  }
+                const ws = ds.workbook.Sheets[targetSheet];
+                if (ws) {
+                  App.dataSource._sheetCache[targetSheet] = XLSX.utils.sheet_to_json(ws, {
+                    raw: false,
+                    dateNF: "yyyy-mm-dd",
+                    defval: "",
+                  });
                 }
               }
 
@@ -10370,8 +10139,5 @@
         }
       };
     </script>
-    <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 text-center text-xs text-gray-500 z-30">
-      Developed by joes technologies
-    </footer>
   </body>
 </html>
