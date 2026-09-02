@@ -3614,7 +3614,7 @@
               isActive: false,
             };
             this.updateUI();
-            this.renderPage(0);
+            try { await this.renderPage(0); } catch (e) { console.warn("renderPage failed", e); }
             this.updateNavUI();
           },
 
@@ -10577,38 +10577,38 @@
             }
           },
 
-          load: async function (id) {
-            if (id === "blank_a4" || !this.data.find((i) => i.id === id)?.url) {
-              try { App.dataSource.close(); } catch (e) { console.warn("datasource close failed", e); }
-              App.ui.showLoading("Creating...");
-              setTimeout(() => {
-                try {
-                  App.paper.changeType("blank", true);
-                  const defaults = {
-                    paperSize: "A4",
-                    paperOrientation: false,
-                    marginTop: 25,
-                    marginBottom: 25,
-                    marginLeft: 20,
-                    marginRight: 20,
-                    paperBgColor: "#ffffff",
-                  };
-                  Object.entries(defaults).forEach(([k, v]) => {
-                    const el = document.getElementById(k);
-                    if (el) el.type === "checkbox" ? (el.checked = v) : (el.value = v);
-                  });
-                  App.paper.updateSize();
-                  if (App.canvas) App.canvas.clear();
-                  App.paper.drawPaper();
-                  App.ui.hideModal("welcomeModal");
-                  App.ui.updateLayerList();
-                  if (App.history) App.history.reset();
-                } finally {
-                  App.ui.hideLoading();
-                }
-              }, 200);
-              return;
-            }
+           load: async function (id) {
+             if (id === "blank_a4" || !this.data.find((i) => i.id === id)?.url) {
+               try { await App.dataSource.close(); } catch (e) { console.warn("datasource close failed", e); }
+               App.ui.showLoading("Creating...");
+               setTimeout(() => {
+                 try {
+                   App.paper.changeType("blank", true);
+                   const defaults = {
+                     paperSize: "A4",
+                     paperOrientation: false,
+                     marginTop: 25,
+                     marginBottom: 25,
+                     marginLeft: 20,
+                     marginRight: 20,
+                     paperBgColor: "#ffffff",
+                   };
+                   Object.entries(defaults).forEach(([k, v]) => {
+                     const el = document.getElementById(k);
+                     if (el) el.type === "checkbox" ? (el.checked = v) : (el.value = v);
+                   });
+                   App.paper.updateSize();
+                   if (App.canvas) App.canvas.clear();
+                   App.paper.drawPaper();
+                   App.ui.hideModal("welcomeModal");
+                   App.ui.updateLayerList();
+                   if (App.history) App.history.reset();
+                 } finally {
+                   App.ui.hideLoading();
+                 }
+               }, 200);
+               return;
+             }
 
             const t = this.data.find((i) => i.id === id);
             if (t?.url) {
