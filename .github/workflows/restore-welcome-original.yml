@@ -1,0 +1,35 @@
+name: Restore welcome button handlers
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-welcome-original.yml'
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore original welcome handlers
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('window.App = App;\n', '', 1)
+          s = s.replace('    <script src="./static/welcome-actions.js"></script>\n', '', 1)
+          s = s.replace('onclick="window.__JoesWelcome.newBlank()"', 'onclick="App.templates.load(\'blank_a4\')"')
+          s = s.replace('onclick="window.__JoesWelcome.openFile()"', 'onclick="document.getElementById(\'projectImportInput\').click()"')
+          s = s.replace('onclick="window.__JoesWelcome.myTemplates()"', 'onclick="App.ui.showModal(\'myTemplatesModal\')"')
+          p.write_text(s, encoding='utf-8')
+      - name: Remove temporary wiring
+        run: |
+          rm -f static/welcome-actions.js
+          rm -f .github/workflows/restore-welcome-original.yml
+      - name: Commit restoration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'fix: restore original welcome button handlers'
+          git push
