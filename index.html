@@ -547,15 +547,15 @@
               </div>
             </div>
             <div class="space-y-4">
-              <button onclick="App.templates.load('blank_a4')" class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 rounded-xl flex items-center gap-3 transition group">
+              <button type="button" onclick="App.templates.load('blank_a4')" class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 rounded-xl flex items-center gap-3 transition group">
                 <i class="ph ph-plus-circle text-xl"></i>
                 <span class="font-medium">New Blank Paper</span>
               </button>
-              <button onclick="document.getElementById('projectImportInput').click()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
+              <button type="button" onclick="document.getElementById('projectImportInput').click()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
                 <i class="ph ph-folder-open text-xl text-slate-400"></i>
                 <span class="font-medium">Open Paper File</span>
               </button>
-              <button onclick="App.ui.showModal('myTemplatesModal')" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
+              <button type="button" onclick="App.ui.showModal('myTemplatesModal')" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
                 <i class="ph ph-files text-xl text-slate-400"></i>
                 <span class="font-medium">My Templates</span>
               </button>
@@ -572,8 +572,8 @@
         </div>
         <div class="w-2/3 p-8 bg-gray-50 flex flex-col">
           <div class="flex items-center gap-4 mb-4 border-b border-gray-200">
-            <button id="tabTemplates" onclick="App.ui.switchWelcomeTab('templates')" class="pb-2 text-sm font-bold text-red-600 border-b-2 border-red-600">Start from Templates</button>
-            <button id="tabRecents" onclick="App.ui.switchWelcomeTab('recents')" class="pb-2 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-700">Recents</button>
+            <button type="button" id="tabTemplates" onclick="App.ui.switchWelcomeTab('templates')" class="pb-2 text-sm font-bold text-red-600 border-b-2 border-red-600">Start from Templates</button>
+            <button type="button" id="tabRecents" onclick="App.ui.switchWelcomeTab('recents')" class="pb-2 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-700">Recents</button>
           </div>
           <div id="templatePanel" class="flex-1 flex flex-col overflow-hidden">
             <div id="templateGrid" class="grid grid-cols-2 gap-4 overflow-y-auto pr-2 custom-scrollbar"></div>
@@ -587,13 +587,13 @@
     </div>
     <div id="myTemplatesModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center modal-backdrop transition-opacity duration-200">
       <div class="bg-white rounded-2xl shadow-2xl p-6 w-[700px] max-h-[80vh] flex flex-col relative">
-        <button onclick="App.ui.hideModal('myTemplatesModal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
+        <button type="button" onclick="App.ui.hideModal('myTemplatesModal')" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
           <i class="ph ph-x text-lg"></i>
         </button>
         <h3 class="text-lg font-bold text-slate-800 mb-4">My Templates</h3>
         <div class="flex justify-between items-center mb-4">
           <p class="text-xs text-slate-500">Your saved designs and recent files</p>
-          <button onclick="App.templates.saveCurrentAsTemplate()" class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition flex items-center gap-1">
+          <button type="button" onclick="App.templates.saveCurrentAsTemplate()" class="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition flex items-center gap-1">
             <i class="ph ph-floppy-disk"></i> Save as Template
           </button>
         </div>
@@ -603,7 +603,7 @@
     </div>
     <div id="contactModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center modal-backdrop transition-opacity duration-200">
       <div class="bg-white rounded-xl shadow-2xl p-6 w-[320px] text-center relative transform transition-all scale-100">
-        <button
+        <button type="button"
           onclick="App.ui.hideModal('contactModal')"
           class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
           <i class="ph ph-x text-lg"></i>
@@ -632,8 +632,8 @@
         <p class="text-xs font-mono bg-gray-100 text-gray-600 py-1 px-2 rounded inline-block mb-6 max-w-full truncate" id="permFileName">filename</p>
 
         <div class="flex gap-3 justify-center">
-          <button id="permCancelBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-slate-600 hover:bg-gray-50 text-sm font-medium transition">Cancel</button>
-          <button id="permGrantBtn" class="px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-sm font-bold shadow-md shadow-red-100 transition flex items-center gap-2">
+          <button type="button" id="permCancelBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-slate-600 hover:bg-gray-50 text-sm font-medium transition">Cancel</button>
+          <button type="button" id="permGrantBtn" class="px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-red-700 text-sm font-bold shadow-md shadow-red-100 transition flex items-center gap-2">
             <i class="ph ph-check-circle"></i> Grant Permission
           </button>
         </div>
@@ -641,7 +641,7 @@
     </div>
     <div id="sponsorModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center modal-backdrop transition-opacity duration-200">
       <div class="bg-white rounded-xl shadow-2xl p-6 w-[320px] text-center relative transform transition-all scale-100">
-        <button
+        <button type="button"
           onclick="App.ui.hideModal('sponsorModal')"
           class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
           <i class="ph ph-x text-lg"></i>
@@ -670,7 +670,7 @@
             <p class="text-xs text-slate-400 mt-0.5">Drag dividers to resize, select cell, right-click or use floating menu to edit</p>
           </div>
           <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-1 border border-gray-200">
-            <i class="ph ph-minus text-xs text-gray-400 cursor-pointer hover:text-slate-700" onclick="App.tableEditor.changeZoom(-0.1)"></i>
+            <button type="button" onclick="App.tableEditor.changeZoom(-0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition"><i class="ph ph-minus text-xs"></i></button>
             <input
               type="range"
               id="tableEditorZoom"
@@ -681,32 +681,32 @@
               class="accent-red-600 h-1.5 w-24 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               oninput="App.tableEditor.setZoom(this.value)"
               title="Editor View Zoom" />
-            <i class="ph ph-plus text-xs text-gray-400 cursor-pointer hover:text-slate-700" onclick="App.tableEditor.changeZoom(0.1)"></i>
+            <button type="button" onclick="App.tableEditor.changeZoom(0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition"><i class="ph ph-plus text-xs"></i></button>
             <span id="tableEditorZoomVal" class="text-xs font-mono text-slate-600 w-10 text-center font-bold">100%</span>
           </div>
-          <button onclick="App.tableEditor.close()" class="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+          <button type="button" onclick="App.tableEditor.close()" class="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
             <i class="ph ph-x text-xl"></i>
           </button>
         </div>
 
         <div class="flex-1 overflow-auto bg-slate-50 flex items-center justify-center p-16 relative select-none cursor-default" id="tableEditArea">
           <div id="tableWrapper" class="m-auto relative group shadow-xl bg-white transition-all duration-200 ring-1 ring-slate-900/5">
-            <button
+            <button type="button"
               onclick="App.tableEditor.addCR('row', 'top')"
               class="absolute -top-5 left-0 w-full h-5 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50/80 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
               <i class="ph ph-plus-circle text-xl"></i>
             </button>
-            <button
+            <button type="button"
               onclick="App.tableEditor.addCR('row', 'bottom')"
               class="absolute -bottom-5 left-0 w-full h-5 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50/80 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
               <i class="ph ph-plus-circle text-xl"></i>
             </button>
-            <button
+            <button type="button"
               onclick="App.tableEditor.addCR('col', 'left')"
               class="absolute top-0 -left-5 h-full w-5 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50/80 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
               <i class="ph ph-plus-circle text-xl"></i>
             </button>
-            <button
+            <button type="button"
               onclick="App.tableEditor.addCR('col', 'right')"
               class="absolute top-0 -right-5 h-full w-5 flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50/80 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
               <i class="ph ph-plus-circle text-xl"></i>
@@ -748,7 +748,7 @@
                 min="9"
                 max="72"
                 title="Font Size" />
-              <button id="floatBoldBtn" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900 transition">
+              <button type="button" id="floatBoldBtn" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900 transition">
                 <i class="ph ph-text-b"></i>
               </button>
             </div>
@@ -788,30 +788,30 @@
             </div>
 
             <div class="flex gap-1 border-r border-gray-200 pr-2">
-              <button onclick="App.tableEditor.applyStyle({ align: 'left' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
+              <button type="button" onclick="App.tableEditor.applyStyle({ align: 'left' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
                 <i class="ph ph-text-align-left"></i>
               </button>
-              <button onclick="App.tableEditor.applyStyle({ align: 'center' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
+              <button type="button" onclick="App.tableEditor.applyStyle({ align: 'center' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
                 <i class="ph ph-text-align-center"></i>
               </button>
-              <button onclick="App.tableEditor.applyStyle({ align: 'right' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
+              <button type="button" onclick="App.tableEditor.applyStyle({ align: 'right' })" class="p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900">
                 <i class="ph ph-text-align-right"></i>
               </button>
-              <button id="floatMergeBtn" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900" title="Merge">
+              <button type="button" id="floatMergeBtn" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900" title="Merge">
                 <i class="ph ph-arrows-in-line-horizontal"></i><i class="ph ph-corners-out text-[25px] absolute"></i>
               </button>
-              <button id="floatSplitBtn" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900" title="Split">
+              <button type="button" id="floatSplitBtn" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-500 hover:text-slate-900" title="Split">
                 <i class="ph ph-arrows-out-line-horizontal"></i><i class="ph ph-corners-out text-[25px] absolute"></i>
               </button>
             </div>
 
             <div class="flex gap-1">
-              <button onclick="App.tableEditor.deleteCR('row')" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-400 transition group" title="Delete Row">
+              <button type="button" onclick="App.tableEditor.deleteCR('row')" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-400 transition group" title="Delete Row">
                 <i class="ph ph-rows text-lg"></i>
                 <i class="ph ph-trash text-sm absolute -bottom-1 -right-1 rounded-full p-[1px] shadow-sm"></i>
               </button>
 
-              <button onclick="App.tableEditor.deleteCR('col')" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-400 transition group" title="Delete Column">
+              <button type="button" onclick="App.tableEditor.deleteCR('col')" class="relative flex items-center justify-center p-1.5 hover:bg-gray-100 rounded text-slate-400 transition group" title="Delete Column">
                 <i class="ph ph-columns text-lg"></i>
                 <i class="ph ph-trash text-sm absolute -bottom-1 -right-1 rounded-full p-[1px] shadow-sm"></i>
               </button>
@@ -831,13 +831,13 @@
               <label class="text-xs text-slate-500 font-bold">Columns</label>
               <input type="number" id="tableEditorColsInput" min="1" max="60" class="w-6 h-6 text-xs text-center focus:border-red-500 focus:outline-none transition bg-transparent" />
             </div>
-            <button id="tableDimSyncBtn" class="hidden text-xs text-red-600 hover:text-red-800 underline">Refresh</button>
+            <button type="button" id="tableDimSyncBtn" class="hidden text-xs text-red-600 hover:text-red-800 underline">Refresh</button>
           </div>
           <div class="flex gap-3 ml-auto">
-            <button id="tableCancelBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-slate-700 text-sm font-medium hover:bg-white hover:border-gray-400 transition bg-white shadow-sm">
+            <button type="button" id="tableCancelBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-slate-700 text-sm font-medium hover:bg-white hover:border-gray-400 transition bg-white shadow-sm">
               Cancel
             </button>
-            <button id="tableInsertBtn" class="px-6 py-2.5 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition shadow-md shadow-red-100 flex items-center gap-2">
+            <button type="button" id="tableInsertBtn" class="px-6 py-2.5 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition shadow-md shadow-red-100 flex items-center gap-2">
               <i class="ph ph-check-circle text-lg"></i> Done & Insert
             </button>
           </div>
@@ -856,17 +856,17 @@
           <span class="font-bold tracking-tight">joes studio</span>
         </div>
         <div class="flex items-center gap-1">
-          <button
+          <button type="button"
             onclick="document.getElementById('projectImportInput').click()"
             class="hover:bg-gray-100 px-2 py-1 rounded font-medium flex items-center gap-1 transition text-slate-600"
             title="Open (Ctrl+O)">
             <i class="ph ph-folder-open text-lg"></i> Open
           </button>
-          <button onclick="App.io.saveProject()" class="hover:bg-gray-100 px-2 py-1 rounded font-medium flex items-center gap-1 transition text-slate-600" title="Save (Ctrl+S)">
+          <button type="button" onclick="App.io.saveProject()" class="hover:bg-gray-100 px-2 py-1 rounded font-medium flex items-center gap-1 transition text-slate-600" title="Save (Ctrl+S)">
             <i class="ph ph-floppy-disk text-lg"></i> Save
           </button>
           <div class="w-px h-4 bg-gray-300 mx-1"></div>
-          <button
+          <button type="button"
             id="btnUndo"
             onclick="App.history.undo()"
             disabled
@@ -874,7 +874,7 @@
             title="Undo (Ctrl+Z)">
             <i class="ph ph-arrow-u-up-left text-lg"></i>
           </button>
-          <button
+          <button type="button"
             id="btnRedo"
             onclick="App.history.redo()"
             disabled
@@ -887,69 +887,69 @@
 
       <div class="flex items-center gap-1">
         <div class="flex items-center hover:bg-gray-100 rounded px-1.5">
-          <button onclick="App.tools.addText()" class="flex items-center gap-1 py-1.5 font-medium transition text-gray-600" title="Insert Text"><i class="ph ph-text-t text-lg"></i> Text</button>
+          <button type="button" onclick="App.tools.addText()" class="flex items-center gap-1 py-1.5 font-medium transition text-gray-600" title="Insert Text"><i class="ph ph-text-t text-lg"></i> Text</button>
 
           <div class="relative dropdown h-full">
-            <button class="flex items-center justify-center px-1 py-1.5 h-full rounded-r hover:bg-gray-100 font-medium transition text-gray-600">
+            <button type="button" class="flex items-center justify-center px-1 py-1.5 h-full rounded-r hover:bg-gray-100 font-medium transition text-gray-600">
               <i class="ph ph-caret-down text-xs"></i>
             </button>
 
             <div class="dropdown-menu w28 left-[50%] -translate-x-[75%]">
-              <button onclick="App.tools.addParagraph()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
+              <button type="button" onclick="App.tools.addParagraph()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
                 <i class="ph ph-text-align-justify text-lg"></i> Paragraph
               </button>
-              <button onclick="App.tools.addDate()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
+              <button type="button" onclick="App.tools.addDate()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
                 <i class="ph ph-calendar text-lg"></i> Time
               </button>
-              <button onclick="App.tools.addPageNum()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
+              <button type="button" onclick="App.tools.addPageNum()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
                 <i class="ph ph-hash text-lg"></i> Page Number
               </button>
-              <button onclick="App.tools.addSerialNumber()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
+              <button type="button" onclick="App.tools.addSerialNumber()" class="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-600 transition">
                 <i class="ph ph-list-numbers text-lg"></i> Serial Number
               </button>
             </div>
           </div>
         </div>
 
-        <button onclick="document.getElementById('imgUpload').click()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
+        <button type="button" onclick="document.getElementById('imgUpload').click()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
           <i class="ph ph-image text-lg"></i> Image
         </button>
 
-        <button onclick="App.tableEditor.open()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
+        <button type="button" onclick="App.tableEditor.open()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
           <i class="ph ph-table text-lg"></i> Table
         </button>
-        <button onclick="App.tools.addBarcode()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
+        <button type="button" onclick="App.tools.addBarcode()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
           <i class="ph ph-barcode text-lg"></i> Barcode
         </button>
 
         <div class="relative dropdown">
-          <button class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
+          <button type="button" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
             <i class="ph ph-shapes text-lg"></i> Shapes <i class="ph ph-caret-down"></i>
           </button>
           <div class="dropdown-menu">
-            <button onclick="App.tools.addLine()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
+            <button type="button" onclick="App.tools.addLine()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 font-medium transition text-gray-600">
               <i class="ph ph-line-segment text-lg"></i> Lines
             </button>
-            <button onclick="App.tools.addShape('rect')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-rectangle"></i> Rectangle</button>
-            <button onclick="App.tools.addShape('circle')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-circle"></i> Circle</button>
-            <button onclick="App.tools.addShape('triangle')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-triangle"></i> Triangle</button>
-            <button onclick="App.tools.addShape('star')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-star"></i> Star Shape</button>
-            <button onclick="App.tools.addShape('diamond')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-diamond"></i> Diamond</button>
+            <button type="button" onclick="App.tools.addShape('rect')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-rectangle"></i> Rectangle</button>
+            <button type="button" onclick="App.tools.addShape('circle')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-circle"></i> Circle</button>
+            <button type="button" onclick="App.tools.addShape('triangle')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-triangle"></i> Triangle</button>
+            <button type="button" onclick="App.tools.addShape('star')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-star"></i> Star Shape</button>
+            <button type="button" onclick="App.tools.addShape('diamond')" class="w-full text-left px-2 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="ph ph-diamond"></i> Diamond</button>
           </div>
         </div>
       </div>
 
       <div class="w-80 flex justify-end gap-2">
-        <button
+        <button type="button"
           onclick="App.ui.showModal('sponsorModal')"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 transition text-xs font-bold mr-1">
           <i class="ph ph-heart-straight text-lg"></i>
           <span>Support Author</span>
         </button>
-        <button onclick="App.ui.showModal('contactModal')" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 text-md font-medium transition text-gray-600" title="Contact Author">
+        <button type="button" onclick="App.ui.showModal('contactModal')" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 text-md font-medium transition text-gray-600" title="Contact Author">
           <i class="ph ph-wechat-logo text-lg"></i>
         </button>
-        <button onclick="App.ui.toggleFullScreen()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 text-md font-medium transition text-gray-600" title="Fullscreen Mode">
+        <button type="button" onclick="App.ui.toggleFullScreen()" class="flex items-center gap-1 px-3 py-1.5 rounded hover:bg-gray-100 text-md font-medium transition text-gray-600" title="Fullscreen Mode">
           <i id="fsIcon" class="ph ph-corners-out text-lg"></i>
         </button>
         <div class="flex items-center gap-1 text-xs text-gray-500">
@@ -958,16 +958,16 @@
           <span>-</span>
           <input type="number" id="printRangeTo" value="0" min="0" class="w-10 compact-input border rounded text-center" title="End page (0 = all)" />
         </div>
-        <button onclick="App.io.exportPNG()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
+        <button type="button" onclick="App.io.exportPNG()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
           <i class="ph ph-image text-lg"></i> PNG
         </button>
-        <button onclick="App.io.exportAllPDFs()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition" title="Export each card/page as a separate PDF">
+        <button type="button" onclick="App.io.exportAllPDFs()" class="bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition" title="Export each card/page as a separate PDF">
           <i class="ph ph-files text-lg"></i> All PDFs
         </button>
-        <button onclick="App.io.exportPDF()" class="bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
+        <button type="button" onclick="App.io.exportPDF()" class="bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition">
           <i class="ph ph-file-pdf text-lg"></i> Export PDF
         </button>
-        <button onclick="App.io.print()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition" title="Print (Ctrl+P)">
+        <button type="button" onclick="App.io.print()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded flex items-center gap-1 shadow-sm transition" title="Print (Ctrl+P)">
           <i class="ph ph-printer text-lg"></i> Print
         </button>
       </div>
@@ -1061,7 +1061,7 @@
                   <input type="number" id="customCardRows" min="1" value="2" class="w-full compact-input border rounded" />
                   <input type="number" id="customCardCols" min="1" value="2" class="w-full compact-input border rounded" />
                 </div>
-                <button onclick="App.paper.applyCustomCards()" class="mt-2 w-full py-1.5 bg-slate-800 text-white rounded text-xs font-medium hover:bg-slate-700 transition">Apply Custom Grid</button>
+                <button type="button" onclick="App.paper.applyCustomCards()" class="mt-2 w-full py-1.5 bg-slate-800 text-white rounded text-xs font-medium hover:bg-slate-700 transition">Apply Custom Grid</button>
               </div>
             </div>
 
@@ -1070,7 +1070,7 @@
                   <label class="compact-label">Background Color</label>
                   <div class="flex items-center gap-2">
                     <input type="color" id="paperBgColor" value="#ffffff" oninput="App.paper.drawGrid()" class="h-7 w-full p-0 border-0 rounded cursor-pointer" />
-                    <button
+                    <button type="button"
                       onclick="
                         document.getElementById('paperBgColor').value = '#ffffff';
                         App.paper.drawGrid();
@@ -1126,7 +1126,7 @@
                         <label class="compact-label">Columns per Row</label>
                         <input type="number" id="labelCols" min="1" class="w-full compact-input border rounded" oninput="App.paper.updateSettings()" />
                       </div>
-                      <button
+                      <button type="button"
                         onclick="App.paper.calcLabelSizeFromGrid()"
                         class="h-[28px] w-[28px] bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 rounded flex items-center justify-center transition mb-[1px]"
                         title="Auto-calculate label size">
@@ -1364,59 +1364,59 @@
 
       <main class="flex-1 bg-gray-200 relative flex flex-col overflow-hidden">
         <div class="absolute bottom-8 right-4 z-20 flex items-center bg-white shadow-lg rounded-lg p-1 border border-gray-200 text-xs">
-          <button onclick="App.zoom.change(-0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition">
+          <button type="button" onclick="App.zoom.change(-0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition">
             <i class="ph ph-minus"></i>
           </button>
           <span id="zoomPercent" class="font-mono w-12 text-center text-gray-600 font-bold">100%</span>
-          <button onclick="App.zoom.change(0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition">
+          <button type="button" onclick="App.zoom.change(0.1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition">
             <i class="ph ph-plus"></i>
           </button>
           <div class="w-px h-3 bg-gray-300"></div>
-          <button onclick="App.zoom.autoFit()" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition" title="Auto Fit">
+          <button type="button" onclick="App.zoom.autoFit()" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded transition" title="Auto Fit">
             <i class="ph ph-arrows-out-simple"></i>
           </button>
         </div>
 
         <div id="topToolbar" class="h-[25px] justify-center bg-white border-b border-gray-200 flex items-center px-4 shrink-0 z-10 gap-3 select-none overflow-x-auto no-scrollbar">
           <div class="flex items-center gap-1">
-            <button onclick="App.tools.flip('x')" class="tune-btn tool-icon-btn" title="Flip Horizontal" disabled>
+            <button type="button" onclick="App.tools.flip('x')" class="tune-btn tool-icon-btn" title="Flip Horizontal" disabled>
               <i class="ph ph-flip-horizontal"></i>
             </button>
-            <button onclick="App.tools.flip('y')" class="tune-btn tool-icon-btn" title="Flip Vertical" disabled>
+            <button type="button" onclick="App.tools.flip('y')" class="tune-btn tool-icon-btn" title="Flip Vertical" disabled>
               <i class="ph ph-flip-vertical"></i>
             </button>
-            <button onclick="App.tools.rotate(-90)" class="tune-btn tool-icon-btn" title="Rotate -90°" disabled>
+            <button type="button" onclick="App.tools.rotate(-90)" class="tune-btn tool-icon-btn" title="Rotate -90°" disabled>
               <i class="ph ph-arrow-counter-clockwise"></i>
             </button>
-            <button onclick="App.tools.rotate(90)" class="tune-btn tool-icon-btn" title="Rotate 90°" disabled>
+            <button type="button" onclick="App.tools.rotate(90)" class="tune-btn tool-icon-btn" title="Rotate 90°" disabled>
               <i class="ph ph-arrow-clockwise"></i>
             </button>
             <div class="w-px h-3 bg-gray-300"></div>
-            <button onclick="App.tools.nudge('left')" class="tune-btn tool-icon-btn" title="Move Left" disabled><i class="ph ph-caret-left"></i></button>
-            <button onclick="App.tools.nudge('down')" class="tune-btn tool-icon-btn" title="Move Down" disabled><i class="ph ph-caret-down"></i></button>
-            <button onclick="App.tools.nudge('up')" class="tune-btn tool-icon-btn" title="Move Up" disabled><i class="ph ph-caret-up"></i></button>
-            <button onclick="App.tools.nudge('right')" class="tune-btn tool-icon-btn" title="Move Right" disabled><i class="ph ph-caret-right"></i></button>
+            <button type="button" onclick="App.tools.nudge('left')" class="tune-btn tool-icon-btn" title="Move Left" disabled><i class="ph ph-caret-left"></i></button>
+            <button type="button" onclick="App.tools.nudge('down')" class="tune-btn tool-icon-btn" title="Move Down" disabled><i class="ph ph-caret-down"></i></button>
+            <button type="button" onclick="App.tools.nudge('up')" class="tune-btn tool-icon-btn" title="Move Up" disabled><i class="ph ph-caret-up"></i></button>
+            <button type="button" onclick="App.tools.nudge('right')" class="tune-btn tool-icon-btn" title="Move Right" disabled><i class="ph ph-caret-right"></i></button>
           </div>
 
           <div class="w-px h-3 bg-gray-300"></div>
 
           <div class="flex items-center gap-1">
-            <button onclick="App.ui.alignObject('left')" class="tune-btn tool-icon-btn" title="Align Left to Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('left')" class="tune-btn tool-icon-btn" title="Align Left to Canvas" disabled>
               <i class="ph ph-align-left-simple"></i>
             </button>
-            <button onclick="App.ui.alignObject('centerH')" class="tune-btn tool-icon-btn" title="Center Horizontal on Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('centerH')" class="tune-btn tool-icon-btn" title="Center Horizontal on Canvas" disabled>
               <i class="ph ph-align-center-horizontal-simple"></i>
             </button>
-            <button onclick="App.ui.alignObject('right')" class="tune-btn tool-icon-btn" title="Align Right to Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('right')" class="tune-btn tool-icon-btn" title="Align Right to Canvas" disabled>
               <i class="ph ph-align-right-simple"></i>
             </button>
-            <button onclick="App.ui.alignObject('top')" class="tune-btn tool-icon-btn" title="Align Top to Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('top')" class="tune-btn tool-icon-btn" title="Align Top to Canvas" disabled>
               <i class="ph ph-align-top-simple"></i>
             </button>
-            <button onclick="App.ui.alignObject('middle')" class="tune-btn tool-icon-btn" title="Center Vertical on Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('middle')" class="tune-btn tool-icon-btn" title="Center Vertical on Canvas" disabled>
               <i class="ph ph-align-center-vertical-simple"></i>
             </button>
-            <button onclick="App.ui.alignObject('bottom')" class="tune-btn tool-icon-btn" title="Align Bottom to Canvas" disabled>
+            <button type="button" onclick="App.ui.alignObject('bottom')" class="tune-btn tool-icon-btn" title="Align Bottom to Canvas" disabled>
               <i class="ph ph-align-bottom-simple"></i>
             </button>
           </div>
@@ -1424,16 +1424,16 @@
           <div class="w-px h-3 bg-gray-300"></div>
 
           <div class="flex items-center gap-1">
-            <button onclick="App.ui.align('left')" class="align-btn tool-icon-btn" title="Align Left" disabled><i class="ph ph-align-left"></i></button>
-            <button onclick="App.ui.align('center')" class="align-btn tool-icon-btn" title="Align Center" disabled>
+            <button type="button" onclick="App.ui.align('left')" class="align-btn tool-icon-btn" title="Align Left" disabled><i class="ph ph-align-left"></i></button>
+            <button type="button" onclick="App.ui.align('center')" class="align-btn tool-icon-btn" title="Align Center" disabled>
               <i class="ph ph-align-center-horizontal"></i>
             </button>
-            <button onclick="App.ui.align('right')" class="align-btn tool-icon-btn" title="Align Right" disabled><i class="ph ph-align-right"></i></button>
-            <button onclick="App.ui.align('top')" class="align-btn tool-icon-btn" title="Align Top" disabled><i class="ph ph-align-top"></i></button>
-            <button onclick="App.ui.align('middle')" class="align-btn tool-icon-btn" title="Align Middle" disabled>
+            <button type="button" onclick="App.ui.align('right')" class="align-btn tool-icon-btn" title="Align Right" disabled><i class="ph ph-align-right"></i></button>
+            <button type="button" onclick="App.ui.align('top')" class="align-btn tool-icon-btn" title="Align Top" disabled><i class="ph ph-align-top"></i></button>
+            <button type="button" onclick="App.ui.align('middle')" class="align-btn tool-icon-btn" title="Align Middle" disabled>
               <i class="ph ph-align-center-vertical"></i>
             </button>
-            <button onclick="App.ui.align('bottom')" class="align-btn tool-icon-btn" title="Align Bottom" disabled>
+            <button type="button" onclick="App.ui.align('bottom')" class="align-btn tool-icon-btn" title="Align Bottom" disabled>
               <i class="ph ph-align-bottom"></i>
             </button>
           </div>
@@ -1441,24 +1441,24 @@
           <div class="w-px h-3 bg-gray-300"></div>
 
           <div class="flex items-center gap-1">
-            <button onclick="App.ui.distribute('horizontal')" class="dist-btn tool-icon-btn" title="Distribute Horizontal" disabled>
+            <button type="button" onclick="App.ui.distribute('horizontal')" class="dist-btn tool-icon-btn" title="Distribute Horizontal" disabled>
               <i class="ph ph-columns"></i>
             </button>
-            <button onclick="App.ui.distribute('vertical')" class="dist-btn tool-icon-btn" title="Distribute Vertical" disabled>
+            <button type="button" onclick="App.ui.distribute('vertical')" class="dist-btn tool-icon-btn" title="Distribute Vertical" disabled>
               <i class="ph ph-rows"></i>
             </button>
           </div>
           <div class="w-px h-3 bg-gray-300"></div>
           <div class="flex items-center gap-1">
-            <button onclick="App.tools.group()" id="btnGroup" class="tool-icon-btn" title="Group (Ctrl+G)" disabled>
+            <button type="button" onclick="App.tools.group()" id="btnGroup" class="tool-icon-btn" title="Group (Ctrl+G)" disabled>
               <i class="ph ph-subtract-square"></i>
             </button>
-            <button onclick="App.tools.ungroup()" id="btnUngroup" class="tool-icon-btn" title="Ungroup (Ctrl+Shift+G)" disabled>
+            <button type="button" onclick="App.tools.ungroup()" id="btnUngroup" class="tool-icon-btn" title="Ungroup (Ctrl+Shift+G)" disabled>
               <i class="ph ph-unite-square"></i>
             </button>
           </div>
           <div class="w-px h-3 bg-gray-300"></div>
-          <button onclick="App.tools.toggleLock()" id="btnLock" class="tool-icon-btn" title="Lock/Unlock (Ctrl+L)" disabled>
+          <button type="button" onclick="App.tools.toggleLock()" id="btnLock" class="tool-icon-btn" title="Lock/Unlock (Ctrl+L)" disabled>
             <i class="ph ph-lock-key-open"></i>
           </button>
         </div>
@@ -1480,10 +1480,10 @@
           class="hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-white shadow-xl rounded-full px-4 py-2 border border-slate-200 flex items-center gap-3 transition-all duration-300">
           <div class="h-6 w-px bg-slate-200"></div>
           <div class="flex items-center gap-1">
-            <button onclick="App.dataSource.nav('first')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="First">
+            <button type="button" onclick="App.dataSource.nav('first')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="First">
               <i class="ph ph-caret-double-left"></i>
             </button>
-            <button onclick="App.dataSource.nav('prev')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Previous">
+            <button type="button" onclick="App.dataSource.nav('prev')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Previous">
               <i class="ph ph-caret-left"></i>
             </button>
 
@@ -1498,10 +1498,10 @@
               <span class="text-xs text-slate-400 select-none">/ <span id="vdpTotal">0</span></span>
             </div>
 
-            <button onclick="App.dataSource.nav('next')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Next">
+            <button type="button" onclick="App.dataSource.nav('next')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Next">
               <i class="ph ph-caret-right"></i>
             </button>
-            <button onclick="App.dataSource.nav('last')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Last">
+            <button type="button" onclick="App.dataSource.nav('last')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition" title="Last">
               <i class="ph ph-caret-double-right"></i>
             </button>
           </div>
@@ -1519,7 +1519,7 @@
         </div>
         <!-- 标签模式切换按钮 -->
         <div id="labelModeToggle" class="hidden absolute bottom-8 left-8 z-20">
-          <button onclick="App.label.toggleMode()" class="bg-white shadow-lg rounded-lg px-4 py-2 border border-gray-200 text-xs font-medium flex items-center gap-2 hover:bg-gray-50 transition">
+          <button type="button" onclick="App.label.toggleMode()" class="bg-white shadow-lg rounded-lg px-4 py-2 border border-gray-200 text-xs font-medium flex items-center gap-2 hover:bg-gray-50 transition">
             <i id="labelModeIcon" class="ph ph-eye text-base"></i>
             <span id="labelModeText">Preview Mode</span>
           </button>
@@ -1528,16 +1528,16 @@
 
       <aside class="w-64 bg-white border-l border-gray-200 flex flex-col z-20 h-full text-xs">
         <div class="h-9 border-b border-gray-200 flex bg-gray-50 shrink-0">
-          <button onclick="App.ui.switchTab('props')" id="tabBtn-props" class="flex-1 font-medium text-slate-700 bg-white border-b-2 border-red-600 transition hover:bg-white focus:outline-none">
+          <button type="button" onclick="App.ui.switchTab('props')" id="tabBtn-props" class="flex-1 font-medium text-slate-700 bg-white border-b-2 border-red-600 transition hover:bg-white focus:outline-none">
             <i class="ph ph-sliders"></i> Properties
           </button>
-          <button
+          <button type="button"
             onclick="App.ui.switchTab('layers')"
             id="tabBtn-layers"
             class="flex-1 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 hover:bg-gray-100 transition focus:outline-none flex items-center justify-center gap-1">
             <i class="ph ph-stack"></i> Layers
           </button>
-          <button
+          <button type="button"
             onclick="App.ui.switchTab('data')"
             id="tabBtn-data"
             class="flex-1 font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-700 hover:bg-gray-100 transition focus:outline-none flex items-center justify-center gap-1">
@@ -1553,16 +1553,16 @@
             </div>
             <div id="selectionControls" class="hidden flex-1 overflow-y-auto p-3 space-y-4 text-xs">
               <section id="dataTypeTabs" class="bg-gray-100 p-1 rounded-lg grid grid-cols-4 gap-1 mb-2 select-none">
-                <button onclick="App.ui.setDataType('static')" id="dtBtn-static" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
+                <button type="button" onclick="App.ui.setDataType('static')" id="dtBtn-static" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
                   Static
                 </button>
-                <button onclick="App.ui.setDataType('variable')" id="dtBtn-variable" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
+                <button type="button" onclick="App.ui.setDataType('variable')" id="dtBtn-variable" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
                   Variable
                 </button>
-                <button onclick="App.ui.setDataType('serial')" id="dtBtn-serial" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
+                <button type="button" onclick="App.ui.setDataType('serial')" id="dtBtn-serial" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">
                   Sequence
                 </button>
-                <button onclick="App.ui.setDataType('date')" id="dtBtn-date" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">Time</button>
+                <button type="button" onclick="App.ui.setDataType('date')" id="dtBtn-date" class="py-1.5 text-center rounded-md transition text-[10px] font-bold text-slate-500 hover:text-slate-700">Time</button>
               </section>
 
               <section id="dataProps" class="hidden bg-white border border-gray-200 rounded-lg p-3 space-y-2 mb-3">
@@ -1585,7 +1585,7 @@
                     <label class="compact-label text-slate-600">Image Folder</label>
                     <span id="vdpImgDirStatus" class="text-[10px] text-orange-500 font-bold">Not Connected</span>
                   </div>
-                  <button
+                  <button type="button"
                     onclick="App.dataSource.selectImageDir()"
                     class="w-full py-1 border rounded bg-gray-50 hover:bg-white text-xs text-slate-600 transition flex items-center justify-center gap-1">
                     <i class="ph ph-folder-open"></i>
@@ -1597,7 +1597,7 @@
               <section id="geoProps" class="border-b border-gray-100 pb-3">
                 <div class="flex justify-between items-center mb-2 border-b border-gray-100">
                   <span class="font-bold text-slate-500">Object Properties</span>
-                  <button
+                  <button type="button"
                     id="propLockBtn"
                     onclick="App.tools.toggleLock()"
                     class="text-slate-400 hover:text-red-600 transition flex items-center gap-1 px-2 py-1 rounded hover:bg-gray-100"
@@ -1825,16 +1825,16 @@
                 </div>
                 <div class="flex gap-2 items-center">
                   <div class="flex border rounded overflow-hidden shrink-0">
-                    <button id="btnBold" onclick="App.ui.toggleStyle('bold')" class="style-btn hover:bg-gray-50 border-r">
+                    <button type="button" id="btnBold" onclick="App.ui.toggleStyle('bold')" class="style-btn hover:bg-gray-50 border-r">
                       <i class="ph ph-text-b"></i>
                     </button>
-                    <button id="btnItalic" onclick="App.ui.toggleStyle('italic')" class="style-btn hover:bg-gray-50 border-r">
+                    <button type="button" id="btnItalic" onclick="App.ui.toggleStyle('italic')" class="style-btn hover:bg-gray-50 border-r">
                       <i class="ph ph-text-italic"></i>
                     </button>
-                    <button id="btnUnderline" onclick="App.ui.toggleStyle('underline')" class="style-btn hover:bg-gray-50">
+                    <button type="button" id="btnUnderline" onclick="App.ui.toggleStyle('underline')" class="style-btn hover:bg-gray-50">
                       <i class="ph ph-text-underline"></i>
                     </button>
-                    <button id="btnVertical" onclick="App.ui.toggleVertical()" class="style-btn hover:bg-gray-50" title="Vertical Text">
+                    <button type="button" id="btnVertical" onclick="App.ui.toggleVertical()" class="style-btn hover:bg-gray-50" title="Vertical Text">
                       <i class="ph ph-text-t rotate-90"></i>
                     </button>
                   </div>
@@ -1843,16 +1843,16 @@
                   </div>
                 </div>
                 <div class="flex border rounded overflow-hidden flex-1">
-                  <button onclick="App.ui.setProp('textAlign', 'left')" class="flex-1 py-1 hover:bg-gray-50 border-r flex justify-center" title="Align Left">
+                  <button type="button" onclick="App.ui.setProp('textAlign', 'left')" class="flex-1 py-1 hover:bg-gray-50 border-r flex justify-center" title="Align Left">
                     <i class="ph ph-text-align-left"></i>
                   </button>
-                  <button onclick="App.ui.setProp('textAlign', 'center')" class="flex-1 py-1 hover:bg-gray-50 border-r flex justify-center" title="Center">
+                  <button type="button" onclick="App.ui.setProp('textAlign', 'center')" class="flex-1 py-1 hover:bg-gray-50 border-r flex justify-center" title="Center">
                     <i class="ph ph-text-align-center"></i>
                   </button>
-                  <button onclick="App.ui.setProp('textAlign', 'right')" class="flex-1 py-1 hover:bg-gray-50 flex justify-center" title="Align Right">
+                  <button type="button" onclick="App.ui.setProp('textAlign', 'right')" class="flex-1 py-1 hover:bg-gray-50 flex justify-center" title="Align Right">
                     <i class="ph ph-text-align-right"></i>
                   </button>
-                  <button onclick="App.ui.setProp('textAlign', 'justify')" class="flex-1 py-1 hover:bg-gray-50 flex justify-center" title="Justify">
+                  <button type="button" onclick="App.ui.setProp('textAlign', 'justify')" class="flex-1 py-1 hover:bg-gray-50 flex justify-center" title="Justify">
                     <i class="ph ph-text-align-justify"></i>
                   </button>
                 </div>
@@ -2137,14 +2137,14 @@
               </section>
 
               <section id="tableProps" class="hidden space-y-2 border-b border-gray-100 pb-3">
-                <button onclick="App.tableEditor.open(App.canvas.getActiveObject())" class="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded font-medium transition">
+                <button type="button" onclick="App.tableEditor.open(App.canvas.getActiveObject())" class="w-full py-2 bg-red-50 text-red-600 border border-red-200 rounded font-medium transition">
                   <i class="ph ph-table text-base mr-1"></i> Edit Table
                 </button>
                 <p class="text-[11px] text-gray-400 leading-relaxed">Tip: Use table tools to adjust rows/columns, merge/split, and cell styles.</p>
               </section>
 
               <section id="imgProps" class="hidden space-y-3">
-                <button
+                <button type="button"
                   onclick="document.getElementById('imgReplaceInput').click()"
                   class="w-full py-2 bg-gray-100 text-slate-700 border border-gray-300 rounded font-medium hover:bg-gray-200 transition text-xs">
                   <i class="ph ph-arrows-clockwise"></i> Replace Image
@@ -2152,10 +2152,10 @@
 
                 <div id="imgNormalControls" class="space-y-2">
                   <div class="flex gap-2">
-                    <button onclick="App.tools.setAsBackground()" class="flex-1 py-2 bg-red-50 text-red-600 border border-red-200 rounded font-medium hover:bg-red-100 transition text-xs">
+                    <button type="button" onclick="App.tools.setAsBackground()" class="flex-1 py-2 bg-red-50 text-red-600 border border-red-200 rounded font-medium hover:bg-red-100 transition text-xs">
                       <i class="ph ph-image-square"></i> Set as Background
                     </button>
-                    <button onclick="App.tools.fillPaper()" class="flex-1 py-2 border bg-gray-100 rounded font-medium transition text-xs"><i class="ph ph-arrows-out-simple"></i> Fill Page</button>
+                    <button type="button" onclick="App.tools.fillPaper()" class="flex-1 py-2 border bg-gray-100 rounded font-medium transition text-xs"><i class="ph ph-arrows-out-simple"></i> Fill Page</button>
                   </div>
                 </div>
 
@@ -2166,7 +2166,7 @@
                   </label>
                   <p class="text-[10px] text-gray-400">When disabled, background image is only visible during design and won't be printed or exported as PDF.</p>
 
-                  <button
+                  <button type="button"
                     onclick="App.paper.clearBackground()"
                     class="w-full py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded font-medium transition text-xs flex items-center justify-center gap-1">
                     <i class="ph ph-trash"></i> Delete Background Image
@@ -2200,7 +2200,7 @@
                       class="w-full compact-input border rounded disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                       onkeydown="if (event.key === 'Enter') App.ui.saveSharedId();"
                       placeholder="Enter shared name (e.g., price)" />
-                    <button
+                    <button type="button"
                       id="propSharedBtn"
                       onclick="App.ui.saveSharedId()"
                       class="px-3 bg-red-50 text-red-600 border border-red-200 rounded hover:bg-red-100 transition text-xs whitespace-nowrap font-medium">
@@ -2236,10 +2236,10 @@
                   <h3 class="font-bold text-slate-700">Import Data Source</h3>
                   <p class="text-xs text-gray-400 mt-1">Supports Excel (.xlsx/.xls) and XML formats</p>
                 </div>
-                <button onclick="App.dataSource.openFile()" class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition text-xs font-medium flex items-center gap-2">
+                <button type="button" onclick="App.dataSource.openFile()" class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition text-xs font-medium flex items-center gap-2">
                   <i class="ph ph-file-plus"></i> Select Local File
                 </button>
-                <button onclick="App.dataSource.importTemplateImage()" class="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition text-xs font-medium flex items-center gap-2">
+                <button type="button" onclick="App.dataSource.importTemplateImage()" class="px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg hover:bg-gray-50 transition text-xs font-medium flex items-center gap-2">
                   <i class="ph ph-image"></i> Import Template Image
                 </button>
               </div>
@@ -2250,7 +2250,7 @@
                       <i class="ph ph-file text-green-600 text-lg shrink-0"></i>
                       <span id="dsFileName" class="font-bold text-xs truncate" title="File Name">filename</span>
                     </div>
-                    <button onclick="App.dataSource.close()" class="text-slate-400 hover:text-red-500 transition shrink-0" title="Disconnect">
+                    <button type="button" onclick="App.dataSource.close()" class="text-slate-400 hover:text-red-500 transition shrink-0" title="Disconnect">
                       <i class="ph ph-trash"></i>
                     </button>
                   </div>
@@ -2261,7 +2261,7 @@
                         id="dsSheetSelect"
                         onchange="App.dataSource.changeSheet(this.value)"
                         class="flex-1 text-xs border-gray-300 rounded bg-white py-1.5 focus:ring-red-500 focus:border-red-500"></select>
-                      <button
+                      <button type="button"
                         onclick="App.dataSource.batchUpdateBinding()"
                         class="h-[30px] px-2 bg-white border border-gray-300 rounded text-slate-600 hover:text-red-600 hover:border-red-300 transition"
                         title="Rebind">
@@ -2282,7 +2282,7 @@
                    <p class="text-[10px] text-slate-400 mt-2 leading-relaxed"><i class="ph ph-info"></i> Tip: Switch to"Properties"select text,Enable"Variable Data"to bind fields.</p>
                  </div>
 
-                 <button
+                 <button type="button"
                    onclick="App.dataSource.autoMatchPhotos()"
                    class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
                    <i class="ph ph-image"></i> Auto-match photos
@@ -2292,12 +2292,12 @@
                    <span class="text-xs text-slate-600">Auto-match on page change</span>
                  </label>
 
-                 <button
+                 <button type="button"
                    onclick="App.dataSource.reloadFromFile()"
                    class="mt-3 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
                    <i class="ph ph-arrows-clockwise"></i> Reload File
                  </button>
-                <button
+                <button type="button"
                   onclick="App.dataSource.importTemplateImage()"
                   class="mt-2 w-full py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded text-xs font-medium transition flex items-center justify-center gap-2">
                   <i class="ph ph-image"></i> Import Template Image
@@ -8952,7 +8952,7 @@
               div.className = `${baseClass} ${isSelected ? activeClass : normalClass}`;
               if (!isBg && !isLabelPreview) div.setAttribute("draggable", "true");
               const deleteBtnHtml = `
-                <button class="del-btn w-6 h-6 flex items-center justify-center rounded text-gray-400 hover:text-red-600 hover:bg-red-100 opacity-0 group-hover:opacity-100 transition-all shrink-0" title="Delete">
+                <button type="button" class="del-btn w-6 h-6 flex items-center justify-center rounded text-gray-400 hover:text-red-600 hover:bg-red-100 opacity-0 group-hover:opacity-100 transition-all shrink-0" title="Delete">
                     <i class="ph ph-trash"></i>
                 </button>`;
               div.innerHTML = `
@@ -10909,6 +10909,7 @@
       };
       const FontPicker = {
         _instances: new Map(), 
+        _globalListenersAdded: false,
 
         create(container, selectEl, onChange) {
           const getOptions = () => {
@@ -11032,12 +11033,22 @@
           document.addEventListener('click', (e) => {
             if (!container.contains(e.target) && !dropdown.contains(e.target)) close();
           }, true);
-          // Reposition on scroll/resize
-          window.addEventListener('scroll', () => { if (isOpen) positionDropdown(); }, true);
-          window.addEventListener('resize', () => { if (isOpen) positionDropdown(); });
+          if (!FontPicker._globalListenersAdded) {
+            window.addEventListener('scroll', () => {
+              FontPicker._instances.forEach((inst) => {
+                if (inst.isOpen) inst.positionDropdown();
+              });
+            }, true);
+            window.addEventListener('resize', () => {
+              FontPicker._instances.forEach((inst) => {
+                if (inst.isOpen) inst.positionDropdown();
+              });
+            });
+            FontPicker._globalListenersAdded = true;
+          }
           syncLabel();
           renderList('');
-          const instance = { setValue, renderList, syncLabel, close, selectEl };
+          const instance = { setValue, renderList, syncLabel, close, selectEl, isOpen, positionDropdown };
           FontPicker._instances.set(selectEl, instance);
           return instance;
         },
