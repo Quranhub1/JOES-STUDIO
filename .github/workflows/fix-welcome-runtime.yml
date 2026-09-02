@@ -1,0 +1,97 @@
+name: Fix welcome screen runtime binding
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-welcome-runtime.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install robust welcome handlers in app scope
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '      window.onload = function () {'
+          if marker not in s:
+              raise SystemExit('App bootstrap marker not found; refusing to patch')
+          block = r'''      // Keep welcome actions in the same lexical scope as App.
+      // This avoids relying on global-name resolution from inline HTML handlers.
+      function bindWelcomeActions() {
+        const modal = document.getElementById('welcomeModal');
+        if (!modal) return false;
+        const buttons = Array.from(modal.querySelectorAll('button'));
+        const findButton = (label) => buttons.find((button) =>
+          (button.textContent || '').trim().replace(/\s+/g, ' ').includes(label)
+        );
+        const blank = findButton('New Blank Paper');
+        const open = findButton('Open Paper File');
+        const mine = findButton('My Templates');
+        const input = document.getElementById('projectImportInput');
+        if (!blank || !open || !mine || !input) return false;
+
+        blank.onclick = function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          App.templates.load('blank_a4');
+          return false;
+        };
+
+        open.onclick = function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          input.click();
+          return false;
+        };
+
+        mine.onclick = function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          App.ui.showModal('myTemplatesModal');
+          return false;
+        };
+
+        input.onchange = function () {
+          const file = input.files && input.files[0];
+          if (!file) return;
+          App.io.loadProject(file);
+          input.value = '';
+        };
+        return true;
+      }
+
+      if (!bindWelcomeActions()) {
+        document.addEventListener('DOMContentLoaded', bindWelcomeActions, { once: true });
+        window.addEventListener('load', bindWelcomeActions, { once: true });
+      }
+'''
+          s = s.replace(marker, block + marker, 1)
+          p.write_text(s, encoding='utf-8')
+      - name: Validate and commit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          required = [
+            'function bindWelcomeActions()',
+            "App.templates.load('blank_a4')",
+            "input.click()",
+            "App.ui.showModal('myTemplatesModal')",
+            'App.io.loadProject(file)'
+          ]
+          missing = [x for x in required if x not in s]
+          if missing:
+            raise SystemExit('Validation failed: ' + ', '.join(missing))
+          print('Welcome runtime binding validation passed')
+          PY
+          rm -f .github/workflows/fix-welcome-runtime.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/fix-welcome-runtime.yml
+          git diff --cached --quiet || git commit -m 'fix: restore reliable welcome screen event binding'
+          git push
