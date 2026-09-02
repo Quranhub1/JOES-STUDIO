@@ -555,7 +555,7 @@
                 <i class="ph ph-folder-open text-xl text-slate-400"></i>
                 <span class="font-medium">Open Paper File</span>
               </button>
-              <button onclick="App.ui.showModal('myTemplatesModal')" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
+              <button onclick="App.ui.showModal('myTemplatesModal'); App.templates.renderMyTemplates();" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 rounded-xl flex items-center gap-3 transition">
                 <i class="ph ph-files text-xl text-slate-400"></i>
                 <span class="font-medium">My Templates</span>
               </button>
@@ -9841,11 +9841,18 @@
           },
 
           loadProjectData: function (data) {
+            const cleanup = (err) => {
+              App.ui.hideLoading();
+              if (err) {
+                console.error(err);
+                Utils.toast("Loading failed", "error");
+              }
+            };
             try {
               if (data.settings) {
                 const s = data.settings;
-                const setV = (id, v) => document.getElementById(id) && (document.getElementById(id).value = v);
-                const setC = (id, v) => document.getElementById(id) && (document.getElementById(id).checked = v);
+                const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+                const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
                 setV("paperType", s.type || "ruled");
                 if (s.marginTop !== undefined) setV("marginTop", Math.round(Utils.px2mm(s.marginTop)));
                 if (s.marginBottom !== undefined) setV("marginBottom", Math.round(Utils.px2mm(s.marginBottom)));
@@ -9923,50 +9930,66 @@
               if (data.dataSource && data.dataSource.imgDirId) {
                 App.dataSource.restoreImageDir(data.dataSource.imgDirId);
               }
-              App.paper.changeType(document.getElementById("paperType").value || "ruled", false);
+              const paperTypeEl = document.getElementById("paperType");
+              App.paper.changeType((paperTypeEl && paperTypeEl.value) || "ruled", false);
               App.paper.updateSize();
-              App.canvas.clear();
+              if (App.canvas) App.canvas.clear();
               const done = () => {
-                if (App.state.paperType === "label") {
-                  App.state.label.mode = "design";
-                  App.state.label.designContent = null;
-                  App.label.updateToggleButtonUI();
-                }
-                App.paper.drawGrid();
-                App.ui.hideModal("welcomeModal");
-                App.ui.updateLayerList();
-                App.canvas.getObjects().forEach((o) => {
-                  if (!o.isGrid) {
-                    o.set({
-                      selectable: true,
-                      evented: true,
+                try {
+                  if (App.state.paperType === "label") {
+                    App.state.label.mode = "design";
+                    App.state.label.designContent = null;
+                    if (App.label && App.label.updateToggleButtonUI) App.label.updateToggleButtonUI();
+                  }
+                  if (App.paper && App.paper.drawGrid) App.paper.drawGrid();
+                  App.ui.hideModal("welcomeModal");
+                  App.ui.updateLayerList();
+                  if (App.canvas) {
+                    App.canvas.getObjects().forEach((o) => {
+                      if (!o.isGrid) {
+                        o.set({
+                          selectable: true,
+                          evented: true,
+                        });
+                      }
+
+                      if (["i-text", "textbox", "text"].includes(o.type)) {
+                        const isDynamic = o.isDynamicDate || o.isDynamicPageNum || o.isSerialNumber || (o.dataBinding && o.dataBinding.type === "variable") || o.syncMode === "ref";
+                        o.set("editable", !isDynamic);
+                      }
+
+                      if (o.isDynamicDate && o.dateConfig) {
+                        o.rawContent = Utils.formatDate(new Date(), null, o.dateConfig);
+                        if (App.content && App.content.render) App.content.render(o);
+                      }
                     });
                   }
-
-                  if (["i-text", "textbox", "text"].includes(o.type)) {
-                    const isDynamic = o.isDynamicDate || o.isDynamicPageNum || o.isSerialNumber || (o.dataBinding && o.dataBinding.type === "variable") || o.syncMode === "ref";
-                    o.set("editable", !isDynamic);
-                  }
-
-                  if (o.isDynamicDate && o.dateConfig) {
-                    o.rawContent = Utils.formatDate(new Date(), null, o.dateConfig);
-                    App.content.render(o);
-                  }
-                });
-                App.history.reset();
-                App.state.hasUnsavedChanges = false;
-                App.ui.hideLoading();
-                Utils.toast("Project loaded successfully");
-                try {
-                  const thumb = App.canvas.toDataURL({ format: "png", multiplier: 0.5 });
-                  App.templates.saveRecent("Project " + new Date().toLocaleString(), thumb, JSON.stringify(data));
-                } catch {}
+                  if (App.history) App.history.reset();
+                  App.state.hasUnsavedChanges = false;
+                  App.ui.hideLoading();
+                  Utils.toast("Project loaded successfully");
+                  try {
+                    const thumb = App.canvas ? App.canvas.toDataURL({ format: "png", multiplier: 0.5 }) : "";
+                    App.templates.saveRecent("Project " + new Date().toLocaleString(), thumb, JSON.stringify(data));
+                  } catch {}
+                } catch (e) {
+                  console.error(e);
+                  Utils.toast("Project render error", "error");
+                  App.ui.hideLoading();
+                }
               };
-              data.canvasData ? App.canvas.loadFromJSON(data.canvasData, done) : done();
+              if (data.canvasData) {
+                try {
+                  App.canvas.loadFromJSON(data.canvasData, done);
+                } catch (e) {
+                  done();
+                  throw e;
+                }
+              } else {
+                done();
+              }
             } catch (e) {
-              console.error(e);
-              Utils.toast("Data parsing error: " + e.message, "error");
-              App.ui.hideLoading();
+              cleanup(e);
             }
           },
 
@@ -10556,30 +10579,33 @@
 
           load: async function (id) {
             if (id === "blank_a4" || !this.data.find((i) => i.id === id)?.url) {
-              App.dataSource.close();
+              try { App.dataSource.close(); } catch (e) { console.warn("datasource close failed", e); }
               App.ui.showLoading("Creating...");
               setTimeout(() => {
-                App.paper.changeType("blank", true);
-                const defaults = {
-                  paperSize: "A4",
-                  paperOrientation: false,
-                  marginTop: 25,
-                  marginBottom: 25,
-                  marginLeft: 20,
-                  marginRight: 20,
-                  paperBgColor: "#ffffff",
-                };
-                Object.entries(defaults).forEach(([k, v]) => {
-                  const el = document.getElementById(k);
-                  if (el) el.type === "checkbox" ? (el.checked = v) : (el.value = v);
-                });
-                App.paper.updateSize();
-                App.canvas.clear();
-                App.paper.drawPaper();
-                App.ui.hideModal("welcomeModal");
-                App.ui.updateLayerList();
-                App.history.reset();
-                App.ui.hideLoading();
+                try {
+                  App.paper.changeType("blank", true);
+                  const defaults = {
+                    paperSize: "A4",
+                    paperOrientation: false,
+                    marginTop: 25,
+                    marginBottom: 25,
+                    marginLeft: 20,
+                    marginRight: 20,
+                    paperBgColor: "#ffffff",
+                  };
+                  Object.entries(defaults).forEach(([k, v]) => {
+                    const el = document.getElementById(k);
+                    if (el) el.type === "checkbox" ? (el.checked = v) : (el.value = v);
+                  });
+                  App.paper.updateSize();
+                  if (App.canvas) App.canvas.clear();
+                  App.paper.drawPaper();
+                  App.ui.hideModal("welcomeModal");
+                  App.ui.updateLayerList();
+                  if (App.history) App.history.reset();
+                } finally {
+                  App.ui.hideLoading();
+                }
               }, 200);
               return;
             }
