@@ -3601,22 +3601,23 @@
             return 1;
           },
 
-          close: async function () {
-            App.state.dataSource = {
-              fileHandle: null,
-              fileHandleId: null,
-              fileName: "",
-              workbook: null,
-              sheetNames: [],
-              currentSheet: "",
-              data: [],
-              headers: [],
-              isActive: false,
-            };
-            this.updateUI();
-            this.renderPage(0);
-            this.updateNavUI();
-          },
+           close: async function () {
+             App.state.dataSource = {
+               fileHandle: null,
+               fileHandleId: null,
+               fileName: "",
+               workbook: null,
+               sheetNames: [],
+               currentSheet: "",
+               data: [],
+               headers: [],
+               isActive: false,
+             };
+             this._sheetCache = {};
+             this.updateUI();
+             this.renderPage(0);
+             this.updateNavUI();
+           },
 
           updateUI: function () {
             const s = App.state.dataSource;
@@ -3652,7 +3653,8 @@
               s.headers.forEach((h) => {
                 const li = document.createElement("li");
                 li.className = "text-xs bg-white border border-gray-200 rounded px-2 py-1.5 text-slate-600 font-mono flex items-center gap-2";
-                li.innerHTML = `<i class="ph ph-brackets-curly text-slate-300"></i> ${h}`;
+                li.innerHTML = '<i class="ph ph-brackets-curly text-slate-300"></i> ';
+                li.appendChild(document.createTextNode(h));
                 li.draggable = true;
                 li.dataset.field = h;
                 li.dataset.sheet = s.currentSheet;
@@ -3773,7 +3775,6 @@
             const updateTasks = [];
             for (const obj of objs) {
               if (obj.type === "image" && obj.dataBinding && obj.dataBinding.type === "variable") {
-                if (obj.type === "image" && obj.dataBinding && obj.dataBinding.type === "variable") {
                   const originalSheet = obj.dataBinding.sheet;
                   const filename = this._getBoundValue(obj, pageIndex);
                   if (obj.dataBinding.sheet !== originalSheet) {
@@ -3785,7 +3786,6 @@
                   }
                   continue;
                 }
-              }
 
               if (obj.isTable && obj.tableData) {
                 this._updateTableData(obj, pageIndex);
@@ -3914,9 +3914,10 @@
                 }
               }
               const displayText = initials || filename || "No bound field found";
+              const escaped = displayText.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
               const errSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="#f3f4f6">
                               <rect width="100" height="100" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"/>
-                              <text x="50" y="45" font-family="sans-serif" font-size="10" fill="#9ca3af" text-anchor="middle">${displayText}</text>
+                              <text x="50" y="45" font-family="sans-serif" font-size="10" fill="#9ca3af" text-anchor="middle">${escaped}</text>
                               <text x="50" y="60" font-family="sans-serif" font-size="8" fill="#9ca3af" text-anchor="middle">No Photo</text></svg>`;
               blobUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(errSvg);
             }
@@ -3924,7 +3925,11 @@
             return new Promise((resolve) => {
               const targetVisualWidth = obj.getScaledWidth();
               const { left, top, angle, originX, originY } = obj;
+              const oldSrc = obj.getSrc();
               obj.setSrc(blobUrl, (newImg) => {
+                if (oldSrc && oldSrc.startsWith && oldSrc.startsWith("blob:")) {
+                  URL.revokeObjectURL(oldSrc);
+                }
                 newImg.set({
                   left,
                   top,
@@ -9263,37 +9268,38 @@
               },
             ).element;
           },
-          _replaceObject: function (oldObj, newObj) {
-            const canvas = App.canvas;
-            const idx = canvas.getObjects().indexOf(oldObj);
-            if (idx === -1) return;
-            const wasActive = canvas.getActiveObject() === oldObj;
-            newObj.dataBinding = oldObj.dataBinding;
-            newObj.rawContent = oldObj.rawContent;
-            newObj.isSerialNumber = oldObj.isSerialNumber;
-            newObj.serialConfig = oldObj.serialConfig;
-            newObj.isDynamicDate = oldObj.isDynamicDate;
-            newObj.dateConfig = oldObj.dateConfig;
-            newObj.isDynamicPageNum = oldObj.isDynamicPageNum;
-            newObj.pageConfig = oldObj.pageConfig;
-            const wasHistoryLocked = App.history.locked;
-            App.history.locked = true;
-            App.state.isReplacingObject = true;
-            try {
-              canvas.remove(oldObj);
-              canvas.insertAt(newObj, idx, false);
-              if (wasActive) {
-                canvas.setActiveObject(newObj);
-              }
-            } finally {
-              App.history.locked = wasHistoryLocked;
-              App.state.isReplacingObject = false;
-            }
+           _replaceObject: function (oldObj, newObj) {
+             const canvas = App.canvas;
+             const idx = canvas.getObjects().indexOf(oldObj);
+             if (idx === -1) return;
+             const wasActive = canvas.getActiveObject() === oldObj;
+             newObj.dataBinding = oldObj.dataBinding;
+             newObj.rawContent = oldObj.rawContent;
+             newObj.isSerialNumber = oldObj.isSerialNumber;
+             newObj.serialConfig = oldObj.serialConfig;
+             newObj.isDynamicDate = oldObj.isDynamicDate;
+             newObj.dateConfig = oldObj.dateConfig;
+             newObj.isDynamicPageNum = oldObj.isDynamicPageNum;
+             newObj.pageConfig = oldObj.pageConfig;
+             const wasHistoryLocked = App.history.locked;
+             App.history.locked = true;
+             App.state.isReplacingObject = true;
+             try {
+               canvas.remove(oldObj);
+               canvas.insertAt(newObj, idx, false);
+               if (wasActive) {
+                 canvas.setActiveObject(newObj);
+               }
+             } finally {
+               App.history.locked = wasHistoryLocked;
+               App.state.isReplacingObject = false;
+             }
 
-            if (!wasHistoryLocked) {
-              App.history.saveState();
-            }
-          },
+             if (!wasHistoryLocked) {
+               App.history.saveState();
+             }
+             canvas.requestRenderAll();
+           },
           _finalizeLayerOrder: function () {
             const list = document.getElementById("layerList");
             const gridObjects = App.canvas.getObjects().filter((o) => o.isGrid);
@@ -10120,25 +10126,28 @@
               return match;
             });
           },
-          compute: function (obj, isRecursiveCall = false) {
+           compute: function (obj, isRecursiveCall = false) {
             if (!obj) return "";
             if (isRecursiveCall && obj._isComputing) return obj.rawContent || "";
             obj._isComputing = true;
-            let raw = "";
-            if (obj.syncMode === "ref" && obj.refId) {
-              const parent = this.findObjectBySharedId(obj.refId);
-              raw = parent ? this.compute(parent, true) : "{Reference lost}";
-            } else {
-              raw = String(obj.rawContent !== undefined ? obj.rawContent : obj.text || "");
-            }
+            try {
+              let raw = "";
+              if (obj.syncMode === "ref" && obj.refId) {
+                const parent = this.findObjectBySharedId(obj.refId);
+                raw = parent ? this.compute(parent, true) : "{Reference lost}";
+              } else {
+                raw = String(obj.rawContent !== undefined ? obj.rawContent : obj.text || "");
+              }
 
-            let parsedRaw = this.parseVariables(raw);
-            let myPre = obj.prefixRaw !== undefined ? obj.prefixRaw : obj.prefix || "";
-            let mySuf = obj.suffixRaw !== undefined ? obj.suffixRaw : obj.suffix || "";
-            myPre = this.parseVariables(myPre);
-            mySuf = this.parseVariables(mySuf);
-            obj._isComputing = false;
-            return myPre + parsedRaw + mySuf;
+              let parsedRaw = this.parseVariables(raw);
+              let myPre = obj.prefixRaw !== undefined ? obj.prefixRaw : obj.prefix || "";
+              let mySuf = obj.suffixRaw !== undefined ? obj.suffixRaw : obj.suffix || "";
+              myPre = this.parseVariables(myPre);
+              mySuf = this.parseVariables(mySuf);
+              return myPre + parsedRaw + mySuf;
+            } finally {
+              obj._isComputing = false;
+            }
           },
 
           findObjectBySharedId: function (id) {
@@ -10697,9 +10706,29 @@
               const d = document.createElement("div");
               d.className = "template-card bg-white p-3 rounded-xl border border-gray-200 cursor-pointer transition flex flex-col gap-2 relative";
               const dateStr = new Date(r.date).toLocaleString();
-              d.innerHTML = `<div class="h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">${
-                r.thumbnail ? `<img src="${r.thumbnail}" class="h-full w-auto object-contain">` : '<i class="ph ph-file-plus text-3xl text-gray-300"></i>'
-              }</div><div><h3 class="font-bold text-slate-700 text-sm">${r.name}</h3><p class="text-slate-400 text-xs">${dateStr}</p></div>`;
+              const thumbDiv = document.createElement("div");
+              thumbDiv.className = "h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100";
+              if (r.thumbnail) {
+                const img = document.createElement("img");
+                img.src = r.thumbnail;
+                img.className = "h-full w-auto object-contain";
+                thumbDiv.appendChild(img);
+              } else {
+                const icon = document.createElement("i");
+                icon.className = "ph ph-file-plus text-3xl text-gray-300";
+                thumbDiv.appendChild(icon);
+              }
+              const infoDiv = document.createElement("div");
+              const title = document.createElement("h3");
+              title.className = "font-bold text-slate-700 text-sm";
+              title.textContent = r.name || "Untitled";
+              const meta = document.createElement("p");
+              meta.className = "text-slate-400 text-xs";
+              meta.textContent = dateStr;
+              infoDiv.appendChild(title);
+              infoDiv.appendChild(meta);
+              d.appendChild(thumbDiv);
+              d.appendChild(infoDiv);
               d.onclick = () => {
                 try {
                   const projectData = typeof r.data === "string" ? JSON.parse(r.data) : r.data;
@@ -10738,9 +10767,29 @@
               const d = document.createElement("div");
               d.className = "template-card bg-white p-3 rounded-xl border border-gray-200 cursor-pointer transition flex flex-col gap-2 relative";
               const dateStr = new Date(r.date).toLocaleString();
-              d.innerHTML = `<div class="h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100">${
-                r.thumbnail ? `<img src="${r.thumbnail}" class="h-full w-auto object-contain">` : '<i class="ph ph-file-plus text-3xl text-gray-300"></i>'
-              }</div><div><h3 class="font-bold text-slate-700 text-sm">${r.name}</h3><p class="text-slate-400 text-xs">${dateStr}</p></div>`;
+              const thumbDiv = document.createElement("div");
+              thumbDiv.className = "h-36 bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center border border-gray-100";
+              if (r.thumbnail) {
+                const img = document.createElement("img");
+                img.src = r.thumbnail;
+                img.className = "h-full w-auto object-contain";
+                thumbDiv.appendChild(img);
+              } else {
+                const icon = document.createElement("i");
+                icon.className = "ph ph-file-plus text-3xl text-gray-300";
+                thumbDiv.appendChild(icon);
+              }
+              const infoDiv = document.createElement("div");
+              const title = document.createElement("h3");
+              title.className = "font-bold text-slate-700 text-sm";
+              title.textContent = r.name || "Untitled";
+              const meta = document.createElement("p");
+              meta.className = "text-slate-400 text-xs";
+              meta.textContent = dateStr;
+              infoDiv.appendChild(title);
+              infoDiv.appendChild(meta);
+              d.appendChild(thumbDiv);
+              d.appendChild(infoDiv);
               d.onclick = () => {
                 try {
                   const projectData = typeof r.data === "string" ? JSON.parse(r.data) : r.data;
