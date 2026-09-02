@@ -6811,6 +6811,7 @@
               editorZoomVal: get("tableEditorZoomVal"),
               inputRows: get("tableEditorRowsInput"),
               inputCols: get("tableEditorColsInput"),
+              dimSyncBtn: get("tableDimSyncBtn"),
             };
           },
 
@@ -6856,6 +6857,7 @@
                 let val = parseInt(ev.target.value);
                 if (val < 1) val = 1;
                 this.resizeTable(val, this.state.cols);
+                if (e.dimSyncBtn) e.dimSyncBtn.classList.add("hidden");
               });
             }
             if (e.inputCols) {
@@ -6863,6 +6865,26 @@
                 let val = parseInt(ev.target.value);
                 if (val < 1) val = 1;
                 this.resizeTable(this.state.rows, val);
+                if (e.dimSyncBtn) e.dimSyncBtn.classList.add("hidden");
+              });
+            }
+            if (e.inputRows && e.inputCols) {
+              const showSyncBtn = () => {
+                if (e.dimSyncBtn) {
+                  const rowsChanged = parseInt(e.inputRows.value) !== this.state.rows;
+                  const colsChanged = parseInt(e.inputCols.value) !== this.state.cols;
+                  e.dimSyncBtn.classList.toggle("hidden", !rowsChanged && !colsChanged);
+                }
+              };
+              e.inputRows.addEventListener("input", showSyncBtn);
+              e.inputCols.addEventListener("input", showSyncBtn);
+            }
+            if (e.dimSyncBtn) {
+              e.dimSyncBtn.addEventListener("click", () => {
+                const rows = Math.max(1, parseInt(e.inputRows?.value) || this.state.rows);
+                const cols = Math.max(1, parseInt(e.inputCols?.value) || this.state.cols);
+                this.resizeTable(rows, cols);
+                e.dimSyncBtn.classList.add("hidden");
               });
             }
           },
