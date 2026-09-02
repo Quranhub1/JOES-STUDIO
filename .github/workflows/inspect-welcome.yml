@@ -1,0 +1,39 @@
+name: Inspect welcome screen
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-welcome.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect welcome markup and handlers
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          keys = ['Welcome', 'Get Started', 'New Template', 'Open from Computer', 'My Templates', 'New Blank', 'Open File', 'Templates', 'welcome']
+          for k in keys:
+              print(f'=== {k} ===')
+              start = 0
+              found = 0
+              while found < 8:
+                  i = s.lower().find(k.lower(), start)
+                  if i < 0: break
+                  line = s.count('\\n', 0, i) + 1
+                  print(f'line {line}: {s[max(0,i-500):min(len(s),i+900)].replace(chr(10), " ")[:1400]}')
+                  start = i + len(k); found += 1
+      - name: Inspect App methods likely used by welcome actions
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          for k in ['const App', 'window.App', 'App.init', 'loadProjectData', 'templates.json', 'onclick']:
+              print(f'=== {k} ===')
+              start=0; n=0
+              while n<20:
+                  i=s.find(k,start)
+                  if i<0: break
+                  print(f'line {s.count(chr(10),0,i)+1}: {s[max(0,i-300):min(len(s),i+500)].replace(chr(10), " ")[:800]}')
+                  start=i+len(k); n+=1
