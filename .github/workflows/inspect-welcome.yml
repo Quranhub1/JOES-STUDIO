@@ -1,39 +1,32 @@
-name: Inspect welcome screen
+name: Apply welcome button fix
 on:
   push:
     paths:
       - '.github/workflows/inspect-welcome.yml'
 jobs:
-  inspect:
+  patch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect welcome markup and handlers
+      - name: Wire welcome actions script
         shell: python
         run: |
           from pathlib import Path
-          s = Path('index.html').read_text(encoding='utf-8')
-          keys = ['Welcome', 'Get Started', 'New Template', 'Open from Computer', 'My Templates', 'New Blank', 'Open File', 'Templates', 'welcome']
-          for k in keys:
-              print(f'=== {k} ===')
-              start = 0
-              found = 0
-              while found < 8:
-                  i = s.lower().find(k.lower(), start)
-                  if i < 0: break
-                  line = s.count('\\n', 0, i) + 1
-                  print(f'line {line}: {s[max(0,i-500):min(len(s),i+900)].replace(chr(10), " ")[:1400]}')
-                  start = i + len(k); found += 1
-      - name: Inspect App methods likely used by welcome actions
-        shell: python
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          tag = '<script src="./static/welcome-actions.js"></script>'
+          if tag not in s:
+              marker = '</body>'
+              if marker not in s:
+                  raise SystemExit('Could not locate </body> in index.html')
+              s = s.replace(marker, '    ' + tag + '\n' + marker, 1)
+              p.write_text(s, encoding='utf-8')
+      - name: Commit source change
         run: |
-          from pathlib import Path
-          s = Path('index.html').read_text(encoding='utf-8')
-          for k in ['const App', 'window.App', 'App.init', 'loadProjectData', 'templates.json', 'onclick']:
-              print(f'=== {k} ===')
-              start=0; n=0
-              while n<20:
-                  i=s.find(k,start)
-                  if i<0: break
-                  print(f'line {s.count(chr(10),0,i)+1}: {s[max(0,i-300):min(len(s),i+500)].replace(chr(10), " ")[:800]}')
-                  start=i+len(k); n+=1
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m 'fix: wire welcome screen buttons'
+          git push
